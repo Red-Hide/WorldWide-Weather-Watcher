@@ -1,3 +1,6 @@
+#ifndef CHANGELEDSTATUS_H
+#define CHANGELEDSTATUS_H
+
 enum etat{
 standard,
 configuration,
@@ -7,3 +10,4 @@ maintenance
 
 void ChangeLEDStatus(etat);
 
+#endif
