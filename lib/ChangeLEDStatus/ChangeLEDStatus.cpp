@@ -1,9 +1,9 @@
 #include <ChainableLED.h>
 #include "ChangeLEDStatus.h"
 
-ChainableLED leds(7, 8, 1); //pin 7 et 8 sur une LED
+ChainableLED leds(7, 8, 1);
 
-void ChangeLEDStatus(etat state)
+void ChangeLEDStatus(int state)
   //Pour l'instant les 4 modes de base, pas encore de LED intermittante
 {
   switch (state) 
@@ -23,5 +23,4 @@ void ChangeLEDStatus(etat state)
    default:
     break;
   }
-
 }

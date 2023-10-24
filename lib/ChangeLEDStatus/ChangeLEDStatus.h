@@ -1,13 +1,10 @@
 #ifndef CHANGELEDSTATUS_H
 #define CHANGELEDSTATUS_H
+#include "ChangeState.h"
+#include <ChainableLED.h>
 
-enum etat{
-standard,
-configuration,
-economique,
-maintenance
-};
+ChainableLED leds; //pin 7 et 8 sur une LED
 
-void ChangeLEDStatus(etat);
+void ChangeLEDStatus(int state);
 
 #endif
