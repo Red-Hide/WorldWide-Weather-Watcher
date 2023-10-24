@@ -1,6 +1,5 @@
 #include <TimerOne.h>
 
-int StandardDernierMode = 1; 
 //Permet de savoir dans quel mode retourner (standard/eco) ...
 //quand on sort du mode maintenance
 void setup()
@@ -47,6 +46,7 @@ void Interruption_boutonR()
 
 void Interruption_timerR() 
 {
+stativ int StandardDernierMode = 1; 
  if (digitalRead(3) == 1)
   { 
   switch etat
