@@ -46,7 +46,7 @@ void Interruption_boutonR()
 
 void Interruption_timerR() 
 {
-stativ int StandardDernierMode = 1; 
+static int StandardDernierMode = 1; 
  if (digitalRead(3) == 1)
   { 
   switch etat
