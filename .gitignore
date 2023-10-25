@@ -6,3 +6,8 @@
 .idea
 cmake-build-debug/
 CMakeLists.txt
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/WorldWide-Weather-Watcher.iml
+CMakeLists.txt
