@@ -21,7 +21,7 @@ void SDCardWrite(String x) {
   }
 }
 
-void SdCardRead(String y) {
+void SDCardRead(String y) {
   File Donnees;
    // re-open the file for reading:
   Donnees = SD.open("test.txt");

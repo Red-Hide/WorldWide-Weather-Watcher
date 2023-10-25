@@ -19,6 +19,5 @@
 #include "ResetDefault.h"
 #include <EEPROM.h>
 #include <DS1307.h>
-
-
+#include "SDCard.h"
 #endif

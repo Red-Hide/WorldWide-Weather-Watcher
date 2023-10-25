@@ -13,6 +13,8 @@ void acquision()
     //Ligne de mesure : D + (date) + G + (Position) + T  + (Temperature) + H + (Humidite) + P + (Pression) + L  + (luminosite)
     String LigneMesure = getDate() + getBME() + getLight();
 
+    SDCardWrite(LigneMesure);
+
     //voir comment fonctionne le gps et l'heure
 }
 
@@ -74,10 +76,20 @@ String getBME()
 }
 
 
-DS1307 clock; // Assuming DS1307 is the class and clock is the object of this class
+DS1307 clock; 
 
 String getDate() {
-    clock.begin(); // Make sure clock is initialized properly before using it
-    
+    clock.begin(); 
+    String date = "";
 
+
+    Time t = clock.getTime();
+
+    String year = String(t.year, DEC);
+    String month = String(t.mon, DEC);
+    String day = String(t.date, DEC);
+
+    date = year + "/" + month + "/" + day;
+
+    return "D" + date;
 }
