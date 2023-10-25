@@ -12,4 +12,7 @@
 #include "SoftwareSerial.h"
 #include <Wire.h>
 #include <SPI.h>
+#include <SD.h>
+#include <stdlib.h>
+#include <stdio.h>
 #endif
