@@ -13,7 +13,6 @@ void setup()
 }
 
 String getGPS()
-//utiliser u-center (voir https://wiki.seeedstudio.com/Grove-GPS, pour windows uniquement)
 {
     String gps = "G";
     if (SoftSerial.available()) //Si il y a des valeurs a lire

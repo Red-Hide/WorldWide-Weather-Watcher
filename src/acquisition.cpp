@@ -1,5 +1,5 @@
-#include <Bme280I2C.h>
-#include <Arduino.h>
+#include <Libraries.h>
+
 
 BME280I2C bme;
 
@@ -11,7 +11,8 @@ String getLight();
 void acquision()
 {
     //Ligne de mesure : D + (date) + G + (Position) + T  + (Temperature) + H + (Humidite) + P + (Pression) + L  + (luminosite)
-    String LigneMesure = getLight() + getLight();
+    String LigneMesure = getDate() + getBME() + getLight();
+
     //voir comment fonctionne le gps et l'heure
 }
 
@@ -70,4 +71,13 @@ String getBME()
     }
     
     return "P" + cpres + "T" + ctemp + "H" + chygr;
+}
+
+
+DS1307 clock; // Assuming DS1307 is the class and clock is the object of this class
+
+String getDate() {
+    clock.begin(); // Make sure clock is initialized properly before using it
+    
+
 }
