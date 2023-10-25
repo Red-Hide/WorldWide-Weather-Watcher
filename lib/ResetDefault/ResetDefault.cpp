@@ -1,6 +1,8 @@
 #include "ResetDefault.h"
 #include <EEPROM.h>
 
+DS1307 clock;
+
 void ResetDefault(){
     uint8_t addr = 0;
     if(EEPROM.read(addr) == 255){

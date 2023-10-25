@@ -12,7 +12,12 @@
 #include "SoftwareSerial.h"
 #include <Wire.h>
 #include <SPI.h>
+<<<<<<< Updated upstream
 #include <SD.h>
 #include <stdlib.h>
 #include <stdio.h>
 #endif
+=======
+#include "Configuration.h"
+#endif
+>>>>>>> Stashed changes

@@ -47,7 +47,7 @@ typedef struct
     uint8_t timeout = 30;
 }config;
 
-DS1307 clock;
+extern DS1307 clock;
 
 void ResetDefault();
 
