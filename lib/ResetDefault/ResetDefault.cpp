@@ -1,5 +1,4 @@
-#include "ResetDefault.h"
-#include <EEPROM.h>
+#include <Libraries.h>
 
 DS1307 clock;
 

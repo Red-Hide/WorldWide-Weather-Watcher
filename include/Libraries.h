@@ -12,12 +12,13 @@
 #include "SoftwareSerial.h"
 #include <Wire.h>
 #include <SPI.h>
-<<<<<<< Updated upstream
 #include <SD.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <Bme280I2C.h>
+#include "ResetDefault.h"
+#include <EEPROM.h>
+#include <DS1307.h>
+
+
 #endif
-=======
-#include "Configuration.h"
-#endif
->>>>>>> Stashed changes
