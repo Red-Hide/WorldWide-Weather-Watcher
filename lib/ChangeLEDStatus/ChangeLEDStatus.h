@@ -5,6 +5,6 @@
 
 ChainableLED leds; //pin 7 et 8 sur une LED
 
-void ChangeLEDStatus(int state);
+void ChangeLEDStatus();
 
 #endif
