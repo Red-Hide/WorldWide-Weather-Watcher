@@ -1,6 +1,4 @@
-#include <TimerOne.h>
-#include "ChangeLEDStatus.h"
-#include "ChangeMode.h"
+#include <Libraries.h>
 
 int state;
 stateList etats;

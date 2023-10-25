@@ -11,3 +11,4 @@ CMakeLists.txt
 .idea/vcs.xml
 .idea/WorldWide-Weather-Watcher.iml
 CMakeLists.txt
+.vscode/extensions.json
