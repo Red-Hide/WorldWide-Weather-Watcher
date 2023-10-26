@@ -83,11 +83,11 @@ String getDate() {
     String date = "";
 
 
-    Time t = clock.getTime();
+    clock.getTime();
 
-    String year = String(t.year, DEC);
-    String month = String(t.mon, DEC);
-    String day = String(t.date, DEC);
+    String year = String(clock.year, DEC);
+    String month = String(clock.month, DEC);
+    String day = String(clock.dayOfMonth, DEC);
 
     date = year + "/" + month + "/" + day;
 
