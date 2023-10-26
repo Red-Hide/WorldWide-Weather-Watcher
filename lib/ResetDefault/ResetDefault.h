@@ -1,5 +1,10 @@
 #ifndef RESETDEFAULT_H
 #define RESETDEFAULT_H
+#define lum_addr 1
+#define temp_addr lum_addr+sizeof(lum)
+#define hygro_addr temp_addr+sizeof(temp)
+#define pression_addr hygro_addr+sizeof(hygro)
+#define config_addr pression_addr+sizeof(pression)
 #include <DS1307.h>
 
 typedef struct{
@@ -10,15 +15,15 @@ typedef struct{
 
 typedef struct{
     bool temp_air = 1;
-    int min_temp_air = -10;
-    int max_temp_air = 60;
+    int8_t min_temp_air = -10;
+    int8_t max_temp_air = 60;
 }temp;
 
 typedef struct
 {
     bool hygr = 1;
-    int hygr_mint = 0;
-    int hygr_maxt = 50;
+    int8_t hygr_mint = 0;
+    int8_t hygr_maxt = 50;
 }hygro;
 
 typedef struct
@@ -43,8 +48,8 @@ typedef struct
 {
     uint8_t log_interval = 10;
     uint16_t file_max_size = 4096;
-    uint8_t version = 1;
     uint8_t timeout = 30;
+    uint8_t version = 1;
 }config;
 
 extern DS1307 clock;
