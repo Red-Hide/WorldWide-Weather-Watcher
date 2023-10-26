@@ -20,4 +20,5 @@
 #include <EEPROM.h>
 #include <DS1307.h>
 #include "SDCard.h"
+#include "Configuration.h"
 #endif
