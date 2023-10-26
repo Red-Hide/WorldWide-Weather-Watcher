@@ -15,7 +15,7 @@
 #include <SD.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <Bme280I2C.h>
+#include <BME280I2C.h>
 #include "ResetDefault.h"
 #include <EEPROM.h>
 #include <DS1307.h>
