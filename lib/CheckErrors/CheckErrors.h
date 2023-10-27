@@ -1,9 +1,10 @@
 #ifndef CHECK_ERRORS_H
 #define CHECK_ERRORS_H
-#include <SD.h>
 #include <ChainableLED.h>
+#include "ChangeMode.h"
+#include "SDCard.h"
 
-void SDCard_Errors();
-
+bool SDCard_Errors();
+bool SDCard_Space();
 
 #endif
