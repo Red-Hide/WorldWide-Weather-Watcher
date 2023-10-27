@@ -1,9 +1,9 @@
-#include "Libraries.h"
+#include "Configuration.h"
 
 void Configuration(){
     if(digitalRead(redInterruptBtn)){
         unsigned long timeStart = millis();
-        while ((timeStart - millis()) < (config_timeout * 60 * 1000))
+        while ((timeStart - millis()) < static_cast<unsigned long> (config_timeout * 60 * 1000))
         {
             String command = "";
             if (Serial.available()){

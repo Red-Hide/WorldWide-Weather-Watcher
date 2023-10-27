@@ -1,6 +1,9 @@
-#include <Libraries.h>
-
-
+#include <Arduino.h>
+#include "SDCard.h"
+#include "ResetDefault.h"
+#include "Configuration.h"
+#include "ChangeMode.h"
+#include "ChangeLEDStatus.h"
 void setup() {
   // put your setup code here, to run once:
 }

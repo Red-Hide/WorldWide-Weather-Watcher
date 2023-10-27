@@ -6,6 +6,7 @@
 #define pression_addr hygro_addr+sizeof(hygro)
 #define config_addr pression_addr+sizeof(pression)
 #include <DS1307.h>
+#include <EEPROM.h>
 
 typedef struct{
     bool lumin = 1;

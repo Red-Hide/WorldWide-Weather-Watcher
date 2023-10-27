@@ -1,6 +1,4 @@
-#include <Libraries.h>
-
-ChainableLED leds(7, 8, 1);
+#include "ChangeLEDStatus.h"
 
 void ChangeLEDStatus()
   // TODO: Pour l'instant les 4 modes de base, pas encore de LED intermittante
