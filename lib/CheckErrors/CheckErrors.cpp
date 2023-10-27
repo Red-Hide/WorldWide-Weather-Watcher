@@ -1,5 +1,5 @@
-#include <Libraries.h>
 #include <CheckErrors.h>
+#include <acquisition.h>
 Sd2Card card;
 SdVolume volume;
 SdFile root;
@@ -35,3 +35,27 @@ void SDCard_Errors() {
    }
    }
 
+//Données d'un capteur incohérente
+void CapteurDonneesErreur(){
+    String LIGHTError = getLight();
+    String BMEError = getBME();
+    String GPSError = getGPS();
+    String TimeError = getDate();
+
+
+    if (LIGHTError == "error"){
+        Serial.print("Une erreur dans le capteur lumiere a ete detecte");
+        Serial.println("Un message pour dire de resoudre le probleme");
+        while (1);
+    }
+    if (BMEError == "erreur"){
+        Serial.print("Une erreur dans le capteur BME a ete detecte");
+        Serial.println("Un message pour dire de resoudre le probleme");
+        while (1);
+    }
+    if (GPSError == "GNA"){
+        Serial.print("Une erreur dans le capteur GPS a ete detecte");
+        Serial.println("Un message pour dire de resoudre le probleme");
+        while (1);
+    }
+}
