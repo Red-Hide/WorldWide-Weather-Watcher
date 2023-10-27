@@ -15,11 +15,12 @@ void Interruption_boutonV()
   {
     // change l'etat à l'aide d'un pointeur
     //(car on ne peut modifier une var globale dans un fct)
+    Serial.println("Interrupt_V");
     time = millis();
     pressed = !pressed;
   }else if(digitalRead(greenInterruptBtn) && pressed){
     pressed = !pressed;
-    if(millis() - time >= 5000)
+    if(millis() - time >= 5000){
     switch (state)
     {
     case standard:
@@ -29,6 +30,8 @@ void Interruption_boutonV()
       state = standard;
       break;
     }
+    ChangeLEDStatus();
+    }
   }
 }
 
@@ -36,9 +39,10 @@ void Interruption_boutonR()
 {
   static unsigned long time;
   static bool pressed = false;
-  static bool StandardLastMode;
+  static int StandardLastMode;
   if (!digitalRead(redInterruptBtn) && !pressed)
   {
+    Serial.println("Interrupt R");
     time = millis();
     pressed = !pressed;
   }else if(digitalRead(redInterruptBtn) && pressed){
@@ -48,15 +52,15 @@ void Interruption_boutonR()
       switch (state)
     {
     case standard:
-      StandardLastMode = true;
+      StandardLastMode = standard;
       state = maintenance;
       break;
     case economique:
-      StandardLastMode = false;
+      StandardLastMode = economique;
       state = maintenance;
       break;
     case maintenance:
-      if (StandardLastMode)
+      if (StandardLastMode == standard)
       {
         state = standard;
         break;
