@@ -3,7 +3,7 @@
 void Configuration(){
     if(digitalRead(redInterruptBtn)){
         unsigned long timeStart = millis();
-        while ((timeStart - millis()) < static_cast<unsigned long> (config_timeout * 60 * 1000))
+        while ((timeStart - millis()) < static_cast<unsigned long> (static_cast<unsigned long> (config_timeout) * static_cast<unsigned long> (60) * static_cast<unsigned long> (1000)))
         {
             String command = "";
             if (Serial.available()){
@@ -27,6 +27,9 @@ void Configuration(){
                 }
             }
         }
+    }else{
+        state = standard;
+        ChangeLEDStatus();
     }
 }
 

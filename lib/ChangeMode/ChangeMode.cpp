@@ -1,31 +1,26 @@
 #include "ChangeMode.h"
 
 
-int state;
+int state = standard;
 stateList etats;
-
-// TODO : Test TimerOne with multiple buttons pressed
-// TODO : Make separate file and function for switching modes.
 
 // Permet de savoir dans quel mode retourner (standard/eco) ...
 // quand on sort du mode maintenance
-void initInterrupt()
-{
-  attachInterrupt(digitalPinToInterrupt(greenInterruptBtn), Interruption_boutonV, RISING);
-  attachInterrupt(digitalPinToInterrupt(redInterruptBtn), Interruption_boutonR, RISING);
-  Timer1.initialize(5000000);
-}
+
 
 void Interruption_boutonV()
 {
   // voir si cette instruction est necessaire
   // c-à-d si il faut desactiver l'interrupt pour en lancer une autre
+  Serial.println("Interrupt V");
   Timer1.detachInterrupt();
   Timer1.attachInterrupt(Interruption_timerV);
 }
 
 void Interruption_timerV()
 {
+  Timer1.detachInterrupt();
+  Serial.println("Interrupt Timer V");
   if (digitalRead(greenInterruptBtn))
   {
     // change l'etat à l'aide d'un pointeur
@@ -46,12 +41,15 @@ void Interruption_boutonR()
 {
   // voir si cette instruction est necessaire
   // c-à-d si il faut desactiver l'interrupt pour en lancer une autre
+  Serial.println("Interrupt R");
   Timer1.detachInterrupt();
   Timer1.attachInterrupt(Interruption_timerR);
 }
 
 void Interruption_timerR()
 {
+  Timer1.detachInterrupt();
+  Serial.println("Interrupt Timer R");
   static bool StandardLastMode;
   if (digitalRead(redInterruptBtn))
   {
