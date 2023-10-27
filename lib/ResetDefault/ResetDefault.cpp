@@ -1,4 +1,4 @@
-#include <Libraries.h>
+#include "ResetDefault.h"
 
 DS1307 clock;
 
@@ -21,8 +21,6 @@ void ResetDefault(){
         addr += sizeof(hygro_config);
         EEPROM.put(addr,pression_config);
         addr += sizeof(pression_config);
-        EEPROM.put(addr,time_config);
-        addr += sizeof(time_config);
         EEPROM.put(addr,config_values);
         clock.fillByYMD(time_config.year,time_config.month,time_config.day);
         clock.fillByHMS(time_config.hours,time_config.minutes,time_config.seconds);
