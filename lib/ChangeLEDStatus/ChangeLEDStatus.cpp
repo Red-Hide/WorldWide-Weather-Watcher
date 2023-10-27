@@ -24,3 +24,7 @@ void ChangeLEDStatus()
     break;
   }
 }
+
+void initLED(){
+  leds.init();
+}
