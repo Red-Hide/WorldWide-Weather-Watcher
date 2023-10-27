@@ -5,7 +5,9 @@
 #include "ChangeLEDStatus.h"
 #include <ChainableLED.h>
 #include "SDCard.h"
+#include "BME280I2C.h"
 
+BME280I2C bme;
 extern DS1307 clock;
 
 String getDate();
