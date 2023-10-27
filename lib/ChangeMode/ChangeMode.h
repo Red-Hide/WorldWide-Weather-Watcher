@@ -21,7 +21,6 @@ erreur_SD
 extern stateList etats;
 extern int state;
 
-void initInterrupt();
 void Interruption_boutonV(); 
 void Interruption_timerV(); 
 void Interruption_boutonR();
