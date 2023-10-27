@@ -1,8 +1,6 @@
-#include <GetDate.h>
-DS1307 clock; 
+#include "Sensors.h"
 
 String getDate() {
-    clock.begin(); 
     String date = "";
 
 
