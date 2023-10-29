@@ -16,8 +16,8 @@ extern SoftwareSerial SoftSerial;
 String getDate();
 void initInterrupt();
 void initSensors();
-
-bool SDCard_Errors();
+bool SDCard_Errors(const char *path);
 bool SDCard_Space();
+void initBME280();
 
 #endif
