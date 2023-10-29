@@ -12,7 +12,7 @@ economique,
 maintenance,
 erreur_RTC,
 erreur_GPS,
-erreur_CAP,
+erreur_BME,
 erreur_DATA,
 SD_FULL,
 erreur_SD

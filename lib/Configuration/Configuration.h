@@ -11,7 +11,7 @@
 #include <EEPROM.h>
 #include "Configuration.h"
 #include "ChangeLEDStatus.h"
-#include <DS1307.h>
+#include "Sensors.h"
 
 typedef struct{
     bool lumin = 1;

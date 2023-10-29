@@ -1,5 +1,11 @@
 #include "Sensors.h"
 
+DS1307 clock;
+SoftwareSerial SoftSerial(4,5);
+BME280I2C bme;
+SdFat32 card;
+FatFile file;
+
 void initInterrupt()
 {
   pinMode(greenInterruptBtn,INPUT_PULLUP);
@@ -11,6 +17,11 @@ void initInterrupt()
 void initSensors(){
   initLED();
   initInterrupt();
+  pinMode(greenInterruptBtn,INPUT);
+  pinMode(redInterruptBtn,INPUT);
+  clock.begin();
+  Serial.begin(9600);
+  SoftSerial.begin(9600);
 }
 
 void initSD(){
