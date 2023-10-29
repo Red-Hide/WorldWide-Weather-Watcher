@@ -33,8 +33,7 @@ void Configuration(){
         state = configuration;
         ChangeLEDStatus();
         unsigned long timeStart = millis();
-        unsigned long timeout = config_timeout * 60UL *  1000UL;
-        while ((millis() - timeStart) < timeout)
+        while ((millis() - timeStart) < config_timeout * 60UL * 1000UL)
         {
             String command = "";
             if (Serial.available()){
