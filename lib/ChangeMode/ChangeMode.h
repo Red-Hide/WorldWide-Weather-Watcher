@@ -22,8 +22,6 @@ extern stateList etats;
 extern int state;
 
 void Interruption_boutonV(); 
-void Interruption_timerV(); 
 void Interruption_boutonR();
-void Interruption_timerR(); 
 
 #endif
