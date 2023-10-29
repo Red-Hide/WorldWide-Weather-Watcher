@@ -1,7 +1,7 @@
 #ifndef CONFIGURATION_H
 #define CONFIGURATION_H
 
-#define config_timeout 30
+#define config_timeout 30UL
 #define lum_addr 1
 #define temp_addr lum_addr+sizeof(lum)
 #define hygro_addr temp_addr+sizeof(temp)
@@ -61,5 +61,6 @@ typedef struct
 void ResetDefault();
 void Configuration();
 void Update(String command, String value);
+int CountChar(String string, char ch);
 
 #endif
