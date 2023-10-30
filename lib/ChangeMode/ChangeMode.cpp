@@ -7,24 +7,20 @@ stateList etats;
 // Permet de savoir dans quel mode retourner (standard/eco) ...
 // quand on sort du mode maintenance
 
-
 void Interruption_boutonV()
 {
-  // voir si cette instruction est necessaire
-  // c-à-d si il faut desactiver l'interrupt pour en lancer une autre
-  Serial.println("Interrupt V");
-  Timer1.detachInterrupt();
-  Timer1.attachInterrupt(Interruption_timerV);
-}
-
-void Interruption_timerV()
-{
-  Timer1.detachInterrupt();
-  Serial.println("Interrupt Timer V");
-  if (digitalRead(greenInterruptBtn))
+  static unsigned long time;
+  static bool pressed = false;
+  if (!digitalRead(greenInterruptBtn) && !pressed)
   {
     // change l'etat à l'aide d'un pointeur
     //(car on ne peut modifier une var globale dans un fct)
+    Serial.println("Interrupt_V");
+    time = millis();
+    pressed = !pressed;
+  }else if(digitalRead(greenInterruptBtn) && pressed){
+    pressed = !pressed;
+    if(millis() - time >= 5000){
     switch (state)
     {
     case standard:
@@ -34,37 +30,37 @@ void Interruption_timerV()
       state = standard;
       break;
     }
+    ChangeLEDStatus();
+    }
   }
 }
 
 void Interruption_boutonR()
 {
-  // voir si cette instruction est necessaire
-  // c-à-d si il faut desactiver l'interrupt pour en lancer une autre
-  Serial.println("Interrupt R");
-  Timer1.detachInterrupt();
-  Timer1.attachInterrupt(Interruption_timerR);
-}
-
-void Interruption_timerR()
-{
-  Timer1.detachInterrupt();
-  Serial.println("Interrupt Timer R");
-  static bool StandardLastMode;
-  if (digitalRead(redInterruptBtn))
+  static unsigned long time;
+  static bool pressed = false;
+  static int StandardLastMode;
+  if (!digitalRead(redInterruptBtn) && !pressed)
   {
-    switch (state)
+    Serial.println("Interrupt R");
+    time = millis();
+    pressed = !pressed;
+  }else if(digitalRead(redInterruptBtn) && pressed){
+    pressed = !pressed;
+    if (millis() - time >= 5000)
+    {
+      switch (state)
     {
     case standard:
-      StandardLastMode = true;
+      StandardLastMode = standard;
       state = maintenance;
       break;
     case economique:
-      StandardLastMode = false;
+      StandardLastMode = economique;
       state = maintenance;
       break;
     case maintenance:
-      if (StandardLastMode)
+      if (StandardLastMode == standard)
       {
         state = standard;
         break;
@@ -76,5 +72,7 @@ void Interruption_timerR()
       }
     }
     ChangeLEDStatus();
+    }
+    
   }
 }

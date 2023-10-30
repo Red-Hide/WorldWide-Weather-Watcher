@@ -3,7 +3,6 @@
 #include <ChainableLED.h>
 #include "ChangeMode.h"
 
-
 void ChangeLEDStatus();
 void initLED();
 

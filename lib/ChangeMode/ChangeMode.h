@@ -12,7 +12,7 @@ economique,
 maintenance,
 erreur_RTC,
 erreur_GPS,
-erreur_CAP,
+erreur_BME,
 erreur_DATA,
 SD_FULL,
 erreur_SD
@@ -22,8 +22,6 @@ extern stateList etats;
 extern int state;
 
 void Interruption_boutonV(); 
-void Interruption_timerV(); 
 void Interruption_boutonR();
-void Interruption_timerR(); 
 
 #endif
