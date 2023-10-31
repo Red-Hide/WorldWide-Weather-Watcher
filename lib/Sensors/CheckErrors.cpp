@@ -19,27 +19,26 @@ bool SDCard_Space(){ // use card.card() to return pointer
    return false;
 }
 
-void CapteurDonneesErreur(){
-    String LIGHTError = getLight();
-    String BMEError = getBME();
-    String GPSError = getGPS();
-    String TimeError = getDate();
+bool GPS_error(){
+    unsigned long TimeStart = millis();
+    while (millis() - TimeStart < EEPROM.read(config_addr+3)*1000)
+    {
+        if (SoftSerial.isListening())
+        {
+            return false;
+        }
+    }
+    return true;
+}
 
-
-    if (LIGHTError == "error"){
-        Serial.print("Une erreur dans le capteur lumiere a ete detecte");
-        Serial.println("Un message pour dire de resoudre le probleme");
-        while (1);
+bool BME_error(){
+    unsigned long TimeStart = millis();
+    while (millis() - TimeStart < EEPROM.read(config_addr+3)*1000)
+    {
+        if (bme.begin())
+        {
+            return false;
+        }
     }
-    if (BMEError == "erreur"){
-        Serial.print("Une erreur dans le capteur BME a ete detecte");
-        Serial.println("Un message pour dire de resoudre le probleme");
-        while (1);
-    }
-    if (GPSError == "GNA"){
-        Serial.print("Une erreur dans le capteur GPS a ete detecte");
-        Serial.println("Un message pour dire de resoudre le probleme");
-        while (1);
-    }
-   return false;
+    return true;
 }
