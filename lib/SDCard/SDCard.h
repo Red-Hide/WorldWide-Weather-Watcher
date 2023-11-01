@@ -5,6 +5,7 @@
 
 SdFat32 card;
 FatFile file;
+SdFat SD;
 
 void SDCardWrite(String x);
 void SDCardRead(String y);
