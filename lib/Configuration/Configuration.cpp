@@ -21,9 +21,7 @@ void ResetDefault(){
         EEPROM.put(addr,pression_config);
         addr += sizeof(pression_config);
         EEPROM.put(addr,config_values);
-        clock.fillByYMD(time_config.year,time_config.month,time_config.day);
-        clock.fillByHMS(time_config.hours,time_config.minutes,time_config.seconds);
-        clock.fillDayOfWeek(time_config.dayOfW);
+        clock.adjust(DateTime(time_config.year,time_config.month,time_config.day,time_config.hours,time_config.minutes,time_config.seconds));
     }
 }
 
@@ -105,7 +103,7 @@ void Update(String command, String value){
         if(hour < 0 || hour > 24 || minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59){
             Serial.println("Error : Please enter a valid clock time");
             return;
-        }else{clock.fillByHMS(hour,minutes,seconds);}
+        }else{clock.adjust(DateTime(clock.now().year(),clock.now().month(),clock.now().day(),hour,minutes,seconds));}
     }else if(command.equalsIgnoreCase("DATE") && CountChar(value,':') == 2){
         uint8_t month = value.substring(0,value.indexOf(":")).toInt();
         uint8_t day = value.substring(value.indexOf(":")+1,value.lastIndexOf(":")).toInt();
@@ -113,26 +111,7 @@ void Update(String command, String value){
         if(month < 1 || month > 12 || day < 1 || day > 31 || year < 2000 || year > 2099){
             Serial.println("Error : Please enter a valid date");
             return;
-        }else{clock.fillByYMD(year,month,day);}
-    }else if(command.equalsIgnoreCase("DAY")){
-        if(value.equalsIgnoreCase("MON")){
-            clock.fillDayOfWeek(MON);
-        }else if(value.equalsIgnoreCase("TUE")){
-            clock.fillDayOfWeek(TUE);
-        }else if(value.equalsIgnoreCase("WED")){
-            clock.fillDayOfWeek(WED);
-        }else if(value.equalsIgnoreCase("THU")){
-            clock.fillDayOfWeek(THU);
-        }else if(value.equalsIgnoreCase("FRI")){
-            clock.fillDayOfWeek(FRI);
-        }else if(value.equalsIgnoreCase("SAT")){
-            clock.fillDayOfWeek(SAT);
-        }else if(value.equalsIgnoreCase("SUN")){
-            clock.fillDayOfWeek(SUN);
-        }else{
-            Serial.println("Error : Please enter a valid day");
-            return;
-        }
+        }else{clock.adjust(DateTime(year,month,day,clock.now().hour(),clock.now().minute(),clock.now().second()));}
     }else{
         Serial.println("Error : Please enter a valid value");
         return;

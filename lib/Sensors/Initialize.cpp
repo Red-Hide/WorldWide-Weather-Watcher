@@ -1,6 +1,6 @@
 #include "Sensors.h"
 
-DS1307 clock;
+RTC_DS1307 clock;
 SoftwareSerial SoftSerial(4,5);
 BME280I2C bme;
 SdFat32 card;
@@ -19,7 +19,7 @@ void initSensors(){
   initInterrupt();
   pinMode(greenInterruptBtn,INPUT);
   pinMode(redInterruptBtn,INPUT);
-  clock.begin();
+  initRTC();
   Serial.begin(9600);
   SoftSerial.begin(9600);
 }
@@ -52,5 +52,13 @@ void initBME280(){
      default:
        state = erreur_BME;
        ChangeLEDStatus();
+  }
+}
+
+void initRTC(){
+  if (!clock.begin())
+  {
+    state = erreur_RTC;
+    ChangeLEDStatus();
   }
 }

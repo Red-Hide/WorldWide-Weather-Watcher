@@ -1,7 +1,7 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 #define LightSensor_Pin A0
-#include <DS1307.h>
+#include <RTClib.h>
 #include "ChangeMode.h"
 #include "ChangeLEDStatus.h"
 #include <ChainableLED.h>
@@ -11,7 +11,7 @@
 #include "Configuration.h"
 
 extern BME280I2C bme;
-extern DS1307 clock;
+extern RTC_DS1307 clock;
 extern SoftwareSerial SoftSerial;
 
 String getDate();

@@ -42,3 +42,15 @@ bool BME_error(){
     }
     return true;
 }
+
+bool RTC_error(){
+    unsigned long TimeStart = millis();
+    while (millis() - TimeStart < EEPROM.read(config_addr+3)*1000)
+    {
+        if (clock.isrunning())
+        {
+            return false;
+        }
+    }
+    return true;
+}
