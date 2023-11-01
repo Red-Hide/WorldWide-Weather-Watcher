@@ -2,7 +2,6 @@
 #define CHANGEMODE_H
 #define greenInterruptBtn 2
 #define redInterruptBtn 3
-#include <TimerOne.h>
 #include "ChangeLEDStatus.h"
 
 enum stateList{

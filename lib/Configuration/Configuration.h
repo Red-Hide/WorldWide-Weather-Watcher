@@ -10,7 +10,6 @@
 
 #include <EEPROM.h>
 #include "Configuration.h"
-#include "ChangeLEDStatus.h"
 #include "Sensors.h"
 
 typedef struct{
@@ -47,7 +46,6 @@ typedef struct
     uint8_t hours = 12;
     uint8_t minutes = 00;
     uint8_t seconds = 00;
-    uint8_t dayOfW = WED;
 }time;
 
 typedef struct 

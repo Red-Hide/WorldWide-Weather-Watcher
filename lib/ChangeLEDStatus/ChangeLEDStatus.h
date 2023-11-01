@@ -1,9 +1,8 @@
 #ifndef CHANGELEDSTATUS_H
 #define CHANGELEDSTATUS_H
-#include <ChainableLED.h>
 #include "ChangeMode.h"
+#include "Sensors.h"
 
 void ChangeLEDStatus();
-void initLED();
 
 #endif

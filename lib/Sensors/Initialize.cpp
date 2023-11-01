@@ -15,7 +15,7 @@ void initInterrupt()
 }
 
 void initSensors(){
-  initLED();
+  leds.init();
   initInterrupt();
   pinMode(greenInterruptBtn,INPUT);
   pinMode(redInterruptBtn,INPUT);
