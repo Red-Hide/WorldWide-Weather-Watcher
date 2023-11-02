@@ -8,25 +8,13 @@ String getGPS();
 String getBME();
 String getLight();
 
-String acquisition()
+void acquision()
 {
-    String data_line;
-    switch (state)
-        case economique:
-            bool GPS_checked_before = false;
-            if (GPS_checked_before) 
-            {
-                GPS_checked_before = false;
-                data_line = getDate()  + getBME() + getLight() + "G : /";
-            }
-            else 
-            {
-                GPS_checked_before = true;
-                data_line = getDate()  + getBME() + getLight() + getGPS();
-            }
-        default :
-            data_line = getDate()  + getBME() + getLight() + getGPS();
-    //Ligne de mesure : D : + (date)  + T : + (Temperature) + H : + (Humidite) + P : + (Pression) + L : + (luminosite) + G : + (Position)
-    return data_line;
+    //Ligne de mesure : D + (date) + G + (Position) + T  + (Temperature) + H + (Humidite) + P + (Pression) + L  + (luminosite)
+    String LigneMesure = String("D" + clock.now()) + getGPS() + getBME() + getLight();
+
+    SDCardWrite(LigneMesure);
+
+    //voir comment fonctionne le gps et l'heure
 }
 
