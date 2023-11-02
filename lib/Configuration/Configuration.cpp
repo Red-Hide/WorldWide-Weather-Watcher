@@ -10,7 +10,7 @@ void ResetDefault(){
         pression pression_config;
         time time_config;
         config config_values;
-        EEPROM.write(addr,1);
+        EEPROM.update(addr,1);
         addr += 1;
         EEPROM.put(addr,lum_config);
         addr += sizeof(lum_config);
@@ -62,40 +62,40 @@ void Configuration(){
 
 void Update(String command, String value){
     if(command.equalsIgnoreCase("LOG_INTERVAL")){
-        EEPROM.write(config_addr,value.toInt());
+        EEPROM.update(config_addr,value.toInt());
     }else if(command.equalsIgnoreCase("FILE_MAX_SIZE")){
-        EEPROM.write(config_addr+1,highByte(value.toInt()));
-        EEPROM.write(config_addr+2,lowByte(value.toInt()));
+        EEPROM.update(config_addr+1,highByte(value.toInt()));
+        EEPROM.update(config_addr+2,lowByte(value.toInt()));
     }else if(command.equalsIgnoreCase("TIMEOUT")){
-        EEPROM.write(config_addr+3,value.toInt());
+        EEPROM.update(config_addr+3,value.toInt());
     }else if(command.equalsIgnoreCase("LUMIN") && value.toInt() <= 1 && value.toInt() >= 0){
-        EEPROM.write(lum_addr,value.toInt());
+        EEPROM.update(lum_addr,value.toInt());
     }else if(command.equalsIgnoreCase("LUMIN_LOW") && value.toInt() >= 0 && value.toInt() <= 1023){
-        EEPROM.write(lum_addr+1,highByte(value.toInt()));
-        EEPROM.write(lum_addr+2,lowByte(value.toInt()));
+        EEPROM.update(lum_addr+1,highByte(value.toInt()));
+        EEPROM.update(lum_addr+2,lowByte(value.toInt()));
     }else if(command.equalsIgnoreCase("LUMIN_HIGH") && value.toInt() >= 0 && value.toInt() <= 1023){
-        EEPROM.write(lum_addr+3,highByte(value.toInt()));
-        EEPROM.write(lum_addr+4,lowByte(value.toInt()));
+        EEPROM.update(lum_addr+3,highByte(value.toInt()));
+        EEPROM.update(lum_addr+4,lowByte(value.toInt()));
     }else if(command.equalsIgnoreCase("TEMP_AIR") && value.toInt() <= 1 && value.toInt() >= 0){
-        EEPROM.write(temp_addr,value.toInt());
+        EEPROM.update(temp_addr,value.toInt());
     }else if(command.equalsIgnoreCase("MIN_TEMP_AIR") && value.toInt() >= -40 && value.toInt() <= 85){
-        EEPROM.write(temp_addr+1,value.toInt());
+        EEPROM.update(temp_addr+1,value.toInt());
     }else if(command.equalsIgnoreCase("MAX_TEMP_AIR") && value.toInt() >= -40 && value.toInt() <= 85){
-        EEPROM.write(temp_addr+2,value.toInt());
+        EEPROM.update(temp_addr+2,value.toInt());
     }else if(command.equalsIgnoreCase("HYGR") && value.toInt() <= 1 && value.toInt() >= 0){
-        EEPROM.write(hygro_addr,value.toInt());
+        EEPROM.update(hygro_addr,value.toInt());
     }else if(command.equalsIgnoreCase("HYGR_MINT") && value.toInt() >= -40 && value.toInt() <= 85){
-        EEPROM.write(hygro_addr+1,value.toInt());
+        EEPROM.update(hygro_addr+1,value.toInt());
     }else if(command.equalsIgnoreCase("HYGR_MAXT") && value.toInt() >= -40 && value.toInt() <= 85){
-        EEPROM.write(hygro_addr+1,value.toInt());
+        EEPROM.update(hygro_addr+1,value.toInt());
     }else if(command.equalsIgnoreCase("PRESSURE") && value.toInt() <= 1 && value.toInt() >= 0){
-        EEPROM.write(pression_addr,value.toInt());
+        EEPROM.update(pression_addr,value.toInt());
     }else if(command.equalsIgnoreCase("PRESSURE_MIN") && value.toInt() >= 300 && value.toInt() <= 1100){
-        EEPROM.write(pression_addr+1,highByte(value.toInt()));
-        EEPROM.write(pression_addr+2,lowByte(value.toInt()));
+        EEPROM.update(pression_addr+1,highByte(value.toInt()));
+        EEPROM.update(pression_addr+2,lowByte(value.toInt()));
     }else if(command.equalsIgnoreCase("PRESSURE_MAX") && value.toInt() >= 300 && value.toInt() <= 1100){
-        EEPROM.write(pression_addr+3,highByte(value.toInt()));
-        EEPROM.write(pression_addr+4,lowByte(value.toInt()));
+        EEPROM.update(pression_addr+3,highByte(value.toInt()));
+        EEPROM.update(pression_addr+4,lowByte(value.toInt()));
     }else if(command.equalsIgnoreCase("CLOCK") && CountChar(value,':') == 2){
         uint8_t hour = value.substring(0,value.indexOf(":")).toInt();
         uint8_t minutes = value.substring(value.indexOf(":")+1,value.lastIndexOf(":")).toInt();

@@ -51,7 +51,7 @@ typedef struct
 typedef struct 
 {
     uint8_t log_interval = 10;
-    uint16_t file_max_size = 4096;
+    uint16_t file_max_size = 2048;
     uint8_t timeout = 30;
     uint8_t version = 1;
 }config;
