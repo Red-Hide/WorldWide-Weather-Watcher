@@ -16,6 +16,9 @@ extern RTC_DS1307 clock;
 extern SoftwareSerial SoftSerial;
 
 String getDate();
+String getGPS();
+String getLight();
+String getBME();
 
 void initInterrupt();
 void initSensors();
@@ -27,5 +30,7 @@ bool SDCard_Space();
 bool GPS_error();
 bool BME_error();
 bool RTC_error();
+
+void Acquisition();
 
 #endif
