@@ -4,7 +4,7 @@ String getDate(){
   static bool timeout = false;
   if (!RTC_error())
   {
-    return "T : " + String(clock.now().year()) + "/" + String(clock.now().month()) + "/" + String(clock.now().day()) + " " + String(clock.now().hour()) + ":" + String(clock.now().minute()) + ":" + String(clock.now().second()) + " | ";
+    return "D : " + String(clock.now().year()) + "/" + String(clock.now().month()) + "/" + String(clock.now().day()) + " " + String(clock.now().hour()) + ":" + String(clock.now().minute()) + ":" + String(clock.now().second()) + " | ";
   }else if (RTC_error() && timeout){
     int lastState = state;
     state = erreur_RTC;
@@ -12,7 +12,7 @@ String getDate(){
     timeout = false;
     state = lastState;
   }else{
-    return "T : NA | ";
+    return "D : NA | ";
   }
   
 }
