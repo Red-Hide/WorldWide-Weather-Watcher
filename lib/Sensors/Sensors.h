@@ -1,12 +1,14 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 #define LightSensor_Pin A0
-#include <RTClib.h>
-#include "ChangeLEDStatus.h"
-#include <ChainableLED.h>
-#include "SDCard.h"
+
+#include "Arduino.h"
+#include "ChainableLED.h"
 #include "BME280I2C.h"
+#include "RTClib.h"
 #include "SoftwareSerial.h"
+#include "ChangeMode.h"
+#include "SDCard.h"
 #include "Configuration.h"
 
 extern ChainableLED leds; // pin 7 et 8 sur une LED

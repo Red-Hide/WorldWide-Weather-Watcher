@@ -1,10 +1,10 @@
 #include "ChangeLEDStatus.h"
-#include "Sensors.h"
 
 ChainableLED leds(7, 8, 1);
 
-void ChangeLEDStatus()
+void ChangeLEDStatus(int status)
 {
+  state = status;
   switch (state)
   {
   case standard:

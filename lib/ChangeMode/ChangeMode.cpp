@@ -19,13 +19,12 @@ void Interruption_boutonV()
     switch (state)
     {
     case standard:
-      state = economique;
+      ChangeLEDStatus(economique);
       break;
     case economique:
-      state = standard;
+      ChangeLEDStatus(standard);
       break;
     }
-    ChangeLEDStatus();
     }
   }
 }
@@ -57,16 +56,15 @@ void Interruption_boutonR()
     case maintenance:
       if (StandardLastMode == standard)
       {
-        state = standard;
+        ChangeLEDStatus(standard);
         break;
       }
       else
       {
-        state = economique;
+        ChangeLEDStatus(economique);
         break;
       }
     }
-    ChangeLEDStatus();
     }
     
   }

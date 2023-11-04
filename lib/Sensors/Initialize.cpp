@@ -25,26 +25,20 @@ void initSensors(){
 
 void initSD(){
   if (!card.begin(4)) {
-    Serial.println(F("initialization failed!"));
-    state = erreur_SD;
-    ChangeLEDStatus();
+    ChangeLEDStatus(erreur_SD);
   }
-  Serial.println(F("initialization done."));
 }
 
 void initBME280(){
   while(!bme.begin())
   {
-    Serial.println(F("Could not find BME280 sensor!"));
-    state = erreur_BME;
-    ChangeLEDStatus();
+    ChangeLEDStatus(erreur_BME);
   }
 }
 
 void initRTC(){
   if (!clock.begin())
   {
-    state = erreur_RTC;
-    ChangeLEDStatus();
+    ChangeLEDStatus(erreur_RTC);
   }
 }

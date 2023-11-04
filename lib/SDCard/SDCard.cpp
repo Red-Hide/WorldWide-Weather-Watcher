@@ -29,8 +29,4 @@ void SDCardWrite(const String& x)
       card.rename(fileName, newFileName);
     }
   }
-  else
-  {
-    Serial.println(F("Error opening data file"));
-  }
 }

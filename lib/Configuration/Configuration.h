@@ -10,6 +10,7 @@
 
 #include "Sensors.h"
 
+
 typedef struct{
     bool lumin = 1;
     uint16_t lumin_low = 255;

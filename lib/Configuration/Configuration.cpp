@@ -4,7 +4,6 @@
 void ResetDefault(){
     uint8_t addr = 0;
     if(EEPROM.read(addr) == 255){
-        Serial.println(F("Reseting values to default"));
         const lum lum_config;
         const temp temp_config;
         const hygro hygro_config;
@@ -28,9 +27,7 @@ void ResetDefault(){
 
 void Configuration(){
     if(!digitalRead(redInterruptBtn)){
-        Serial.println(F("Entered configuration mode"));
-        state = configuration;
-        ChangeLEDStatus();
+        ChangeLEDStatus(configuration);
         unsigned long timeStart = millis();
         while ((millis() - timeStart) < config_timeout * 60UL * 1000UL)
         {
@@ -42,10 +39,7 @@ void Configuration(){
                         EEPROM.update(0,255);
                         ResetDefault();
                     }else if(command.equalsIgnoreCase("VERSION")){
-                        Serial.print(F("Version : "));
                         Serial.println(EEPROM.read(config_addr+4));
-                    }else{
-                        Serial.println(F("Error : Command not found. Please try another one."));
                     }
                 }else{
                     Update(command.substring(0,index),command.substring(index+1));
@@ -53,8 +47,7 @@ void Configuration(){
             }
         }
     }
-    state = standard;
-    ChangeLEDStatus();
+    ChangeLEDStatus(standard);
 }
 
 void Update(const String &command, const String &value){
@@ -98,7 +91,6 @@ void Update(const String &command, const String &value){
         uint8_t minutes = value.substring(value.indexOf(":")+1,value.lastIndexOf(":")).toInt();
         uint8_t seconds = value.substring(value.lastIndexOf(":")+1).toInt();
         if(hour < 0 || hour > 24 || minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59){
-            Serial.println(F("Error : Please enter a valid clock time"));
             return;
         }else{clock.adjust(DateTime(clock.now().year(),clock.now().month(),clock.now().day(),hour,minutes,seconds));}
     }else if(command.equalsIgnoreCase("DATE") && CountChar(value,':') == 2){
@@ -106,14 +98,11 @@ void Update(const String &command, const String &value){
         uint8_t day = value.substring(value.indexOf(":")+1,value.lastIndexOf(":")).toInt();
         uint16_t year = value.substring(value.lastIndexOf(":")+1).toInt();
         if(month < 1 || month > 12 || day < 1 || day > 31 || year < 2000 || year > 2099){
-            Serial.println(F("Error : Please enter a valid date"));
             return;
         }else{clock.adjust(DateTime(year,month,day,clock.now().hour(),clock.now().minute(),clock.now().second()));}
     }else{
-        Serial.println(F("Error : Please enter a valid value"));
         return;
     }
-    Serial.println(F("Success : Configuration successfully updated"));
 }
 
 int CountChar(const String &string, char ch){

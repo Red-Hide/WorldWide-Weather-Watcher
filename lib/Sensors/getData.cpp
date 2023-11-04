@@ -4,7 +4,7 @@
 
 String getDate(){
   static bool timeout = false;
-  char *date = "T : ";
+  char date[] = "T : ";
   char buffer [10];
   bool error_rtc = RTC_error();
   if (!error_rtc)
@@ -24,12 +24,11 @@ String getDate(){
     return String(date);
   }else if (error_rtc && timeout){
     int lastState = state;
-    state = erreur_RTC;
-    ChangeLEDStatus();
+    ChangeLEDStatus(erreur_RTC);
     timeout = false;
-    state = lastState;
+    ChangeLEDStatus(lastState);
   }else{
-    strcat(date, "NA | ");
+    strcat(date, "NA |");
     return String(date);
   }
 }
@@ -73,10 +72,9 @@ String getGPS()
   else if (error_GPS && timeout)
   {
     int lastState = state;
-    state = erreur_GPS;
-    ChangeLEDStatus();
+    ChangeLEDStatus(erreur_GPS);
     timeout = false;
-    state = lastState;
+    ChangeLEDStatus(lastState);
   }
   else
   {
@@ -136,8 +134,7 @@ String getBME()
       EEPROM.get(pression_addr + 3, pressure_max);
       if (pressure_min > pression || pression > pressure_max)
       {
-        state = erreur_DATA;
-        ChangeLEDStatus();
+        ChangeLEDStatus(erreur_DATA);
       }
       cpres += String(pression);
     }
@@ -150,8 +147,7 @@ String getBME()
       EEPROM.get(temp_addr + 3, temp_max);
       if (temp_min > temperature || temperature > temp_max)
       {
-        state = erreur_DATA;
-        ChangeLEDStatus();
+        ChangeLEDStatus(erreur_DATA);
       }
       ctemp += String(temperature);
     }
@@ -179,10 +175,9 @@ String getBME()
   else if (erreur && timeout)
   {
     int lastState = state;
-    state = erreur_BME;
-    ChangeLEDStatus();
+    ChangeLEDStatus(erreur_BME);
     timeout = false;
-    state = lastState;
+    ChangeLEDStatus(lastState);
   }else{
     data += cpres;
     data += "NA | ";

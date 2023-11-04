@@ -3,6 +3,6 @@
 #include "ChangeMode.h"
 #include "Sensors.h"
 
-void ChangeLEDStatus();
+void ChangeLEDStatus(int);
 
 #endif
