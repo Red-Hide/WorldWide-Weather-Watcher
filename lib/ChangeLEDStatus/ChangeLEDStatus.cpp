@@ -58,7 +58,7 @@ void ChangeLEDStatus(int status)
   case erreur_DATA:
     while (true)
     {
-      blink('b',2000);
+      blink('g',2000);
     }
   case SD_FULL:
     while (SDCard_Space())
