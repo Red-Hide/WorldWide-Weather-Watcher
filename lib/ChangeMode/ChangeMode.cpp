@@ -1,7 +1,6 @@
 #include "ChangeMode.h"
 
-
-int state = standard;
+int state;
 stateList etats;
 
 void Interruption_boutonV()
@@ -13,18 +12,21 @@ void Interruption_boutonV()
   {
     time = millis();
     pressed = !pressed;
-  }else if(isPressed && pressed){
+  }
+  else if (isPressed && pressed)
+  {
     pressed = !pressed;
-    if(millis() - time >= 5000){
-    switch (state)
+    if (millis() - time >= 5000)
     {
-    case standard:
-      ChangeLEDStatus(economique);
-      break;
-    case economique:
-      ChangeLEDStatus(standard);
-      break;
-    }
+      switch (state)
+      {
+      case standard:
+        ChangeLEDStatus(economique);
+        break;
+      case economique:
+        ChangeLEDStatus(standard);
+        break;
+      }
     }
   }
 }
@@ -39,33 +41,34 @@ void Interruption_boutonR()
   {
     time = millis();
     pressed = !pressed;
-  }else if(isPressed && pressed){
+  }
+  else if (isPressed && pressed)
+  {
     pressed = !pressed;
     if (millis() - time >= 5000)
     {
       switch (state)
-    {
-    case standard:
-      StandardLastMode = standard;
-      state = maintenance;
-      break;
-    case economique:
-      StandardLastMode = economique;
-      state = maintenance;
-      break;
-    case maintenance:
-      if (StandardLastMode == standard)
       {
-        ChangeLEDStatus(standard);
+      case standard:
+        StandardLastMode = state;
+        ChangeLEDStatus(maintenance);
         break;
-      }
-      else
-      {
-        ChangeLEDStatus(economique);
+      case economique:
+        StandardLastMode = state;
+        ChangeLEDStatus(maintenance);
         break;
+      case maintenance:
+        if (StandardLastMode == standard)
+        {
+          ChangeLEDStatus(standard);
+          break;
+        }
+        else
+        {
+          ChangeLEDStatus(economique);
+          break;
+        }
       }
     }
-    }
-    
   }
 }
