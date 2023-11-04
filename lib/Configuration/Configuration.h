@@ -58,6 +58,7 @@ typedef struct
 void ResetDefault();
 void Configuration();
 void Update(const String &command, const String &value);
+bool checkValue(int &val, char type);
 int CountChar(const String &string, char ch);
 
 #endif

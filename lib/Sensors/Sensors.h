@@ -25,6 +25,7 @@ void initInterrupt();
 void initSensors();
 void initBME280();
 void initRTC();
+void initSD();
 
 bool SDCard_Errors();
 bool SDCard_Space();

@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include "Sensors.h"
 #include <EEPROM.h>
 
@@ -6,7 +5,7 @@ int main(){
   initSensors();
   ResetDefault();
   Configuration();
-  while (true)
+  for (;;)
   {
     unsigned long TimeStart = millis();
     uint8_t interval;

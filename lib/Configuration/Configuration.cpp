@@ -3,7 +3,9 @@
 
 void ResetDefault(){
     uint8_t addr = 0;
-    if(EEPROM.read(addr) == 255){
+    switch (EEPROM.read(addr))
+    {
+    case 255:
         const lum lum_config;
         const temp temp_config;
         const hygro hygro_config;
@@ -22,6 +24,7 @@ void ResetDefault(){
         addr += sizeof(pression_config);
         EEPROM.put(addr,config_values);
         clock.adjust(DateTime(time_config.year,time_config.month,time_config.day,time_config.hours,time_config.minutes,time_config.seconds));
+        break;
     }
 }
 
@@ -39,7 +42,7 @@ void Configuration(){
                         EEPROM.update(0,255);
                         ResetDefault();
                     }else if(command.equalsIgnoreCase("VERSION")){
-                        Serial.println(EEPROM.read(config_addr+4));
+                        Serial.write(EEPROM.read(config_addr+4));
                     }
                 }else{
                     Update(command.substring(0,index),command.substring(index+1));
@@ -50,7 +53,7 @@ void Configuration(){
     ChangeLEDStatus(standard);
 }
 
-bool checkValue(int val, char type)
+bool checkValue(const int &val, char type)
 {
     switch (type)
     {
@@ -88,7 +91,7 @@ void Update(const String &command, const String &value)
         {clock.adjust(DateTime(year,month,day,clock.now().hour(),clock.now().minute(),clock.now().second()));}}
     else
     {
-        int val = value.toInt();
+        const int val = value.toInt();
         if(command.equalsIgnoreCase("LOG_INTERVAL")){
         EEPROM.update(config_addr,val);
         }else if(command.equalsIgnoreCase("FILE_MAX_SIZE")){
@@ -124,8 +127,7 @@ void Update(const String &command, const String &value)
         }else if(command.equalsIgnoreCase("PRESSURE_MAX") && checkValue(val,'p')){
         EEPROM.update(pression_addr+3,highByte(val));
         EEPROM.update(pression_addr+4,lowByte(val));
-    }else
-        return;
+    }
     }
     
 }

@@ -6,8 +6,6 @@ BME280I2C bme;
 
 void initInterrupt()
 {
-  pinMode(greenInterruptBtn,INPUT_PULLUP);
-  pinMode(redInterruptBtn,INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(greenInterruptBtn), Interruption_boutonV, CHANGE);
   attachInterrupt(digitalPinToInterrupt(redInterruptBtn), Interruption_boutonR, CHANGE);
 }
@@ -15,10 +13,10 @@ void initInterrupt()
 void initSensors(){
   leds.init();
   initInterrupt();
-  pinMode(greenInterruptBtn,INPUT);
-  pinMode(redInterruptBtn,INPUT);
-  pinMode(LightSensor_Pin, INPUT_PULLUP);
+  DDRD = DDRD | B11110000;
   initRTC();
+  initBME280();
+  initSD();
   Serial.begin(9600);
   SoftSerial.begin(9600);
 }

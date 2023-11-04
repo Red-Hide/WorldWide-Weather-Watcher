@@ -5,7 +5,7 @@ ChainableLED leds(7, 8, 1);
 void blink(char color,int duree)
 {
   leds.setColorRGB(7, 255, 0, 0); //rouge
-  delay(1000);
+  _delay_ms(1000);
   switch (color)
   {
     case 'w':
@@ -56,7 +56,7 @@ void ChangeLEDStatus(int status)
       blink('g',1000); 
     }
   case erreur_DATA:
-    while (true)
+    for (;;)
     {
       blink('g',2000);
     }
