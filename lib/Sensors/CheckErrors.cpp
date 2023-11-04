@@ -30,18 +30,6 @@ bool GPS_error(){
     return true;
 }
 
-bool BME_error(){
-    unsigned long TimeStart = millis();
-    while (millis() - TimeStart < EEPROM.read(config_addr+3)*1000)
-    {
-        if (bme.begin())
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
 bool RTC_error(){
     unsigned long TimeStart = millis();
     while (millis() - TimeStart < EEPROM.read(config_addr+3)*1000)

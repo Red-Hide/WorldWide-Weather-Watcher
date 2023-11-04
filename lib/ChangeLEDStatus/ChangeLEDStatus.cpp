@@ -50,11 +50,6 @@ void ChangeLEDStatus(int status)
     {
       blink('y',1000);
     }
-  case erreur_BME:
-    while (BME_error())
-    {
-      blink('g',1000); 
-    }
   case erreur_DATA:
     for (;;)
     {

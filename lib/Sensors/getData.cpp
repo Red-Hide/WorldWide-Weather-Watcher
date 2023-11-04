@@ -120,14 +120,11 @@ String getBME()
   String ctemp("T : ");
   String chygr("H : ");
   String data("");
-  bool erreur = BME_error();
   static bool timeout = false;
-
-  if (!erreur)
-  {
+  bme.takeForcedMeasurement();
     if (EEPROM.read(pression_addr)) // Si capteur de pression activé
     {
-      pression = bme.pres() / 100; // Le capteur est lit en Pa, on converti en HPa
+      pression = bme.getPressure() / 100; // Le capteur est lit en Pa, on converti en HPa
       uint16_t pressure_min;
       uint16_t pressure_max;
       EEPROM.get(pression_addr + 1, pressure_min);
@@ -140,7 +137,7 @@ String getBME()
     }
     if (EEPROM.read(temp_addr)) // Si capteur de temperature activé
     {
-      temperature = bme.temp(); // °C
+      temperature = bme.getTemperatureCelcius(); // °C
       int8_t temp_min;
       int8_t temp_max;
       EEPROM.get(temp_addr + 1, temp_min);
@@ -153,7 +150,7 @@ String getBME()
     }
     if (EEPROM.read(hygro_addr)) // Si capteur d'hygrométrie activé
     {
-      hygrometrie = bme.hum(); // %
+      hygrometrie = bme.getRelativeHumidity(); // %
       int8_t hygr_min;
       int8_t hygr_max;
       EEPROM.get(hygro_addr + 1, hygr_min);
@@ -171,22 +168,6 @@ String getBME()
       }
       chygr += String(hygrometrie);
     }
-  }
-  else if (erreur && timeout)
-  {
-    int lastState = state;
-    ChangeLEDStatus(erreur_BME);
-    timeout = false;
-    ChangeLEDStatus(lastState);
-  }else{
-    data += cpres;
-    data += "NA | ";
-    data += ctemp;
-    data += "NA | ";
-    data += chygr;
-    data += "NA |";
-    return data;
-  }
   data += cpres;
   data += " | ";
   data += ctemp;
