@@ -2,7 +2,6 @@
 #define SENSORS_H
 #define LightSensor_Pin A0
 #include <RTClib.h>
-#include "ChangeMode.h"
 #include "ChangeLEDStatus.h"
 #include <ChainableLED.h>
 #include "SDCard.h"
@@ -31,6 +30,6 @@ bool GPS_error();
 bool BME_error();
 bool RTC_error();
 
-void Acquisition();
+String acquisition();
 
 #endif

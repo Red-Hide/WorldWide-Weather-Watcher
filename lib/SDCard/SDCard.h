@@ -1,13 +1,9 @@
 #ifndef SD_CARD_H
 #define SD_CARD_H
-#include <Arduino.h>
 #include <SdFat.h>
 
-SdFat32 card;
-FatFile file;
-SdFat SD;
+extern SdFat32 card;
 
-void SDCardWrite(String x);
-void SDCardRead(String y);
+void SDCardWrite(const String& x);
 
 #endif

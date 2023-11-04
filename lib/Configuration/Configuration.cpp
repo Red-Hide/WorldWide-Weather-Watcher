@@ -1,15 +1,16 @@
 #include "Configuration.h"
+#include <EEPROM.h>
 
 void ResetDefault(){
     uint8_t addr = 0;
     if(EEPROM.read(addr) == 255){
-        Serial.println("Reseting values to default");
-        lum lum_config;
-        temp temp_config;
-        hygro hygro_config;
-        pression pression_config;
-        time time_config;
-        config config_values;
+        Serial.println(F("Reseting values to default"));
+        const lum lum_config;
+        const temp temp_config;
+        const hygro hygro_config;
+        const pression pression_config;
+        const time time_config;
+        const config config_values;
         EEPROM.update(addr,1);
         addr += 1;
         EEPROM.put(addr,lum_config);
@@ -27,28 +28,24 @@ void ResetDefault(){
 
 void Configuration(){
     if(!digitalRead(redInterruptBtn)){
-        Serial.println("Entered configuration mode");
+        Serial.println(F("Entered configuration mode"));
         state = configuration;
         ChangeLEDStatus();
         unsigned long timeStart = millis();
         while ((millis() - timeStart) < config_timeout * 60UL * 1000UL)
         {
-            String command = "";
             if (Serial.available()){
-                command = Serial.readString();
-                command.trim();
-                Serial.println(command.equalsIgnoreCase("VERSION"));
-                int index = command.indexOf("=");
+                const String command = Serial.readString();
+                const int index = command.indexOf("=");
                 if(index == -1){
                     if(command.equalsIgnoreCase("RESET")){
                         EEPROM.update(0,255);
                         ResetDefault();
                     }else if(command.equalsIgnoreCase("VERSION")){
-                        config configuration;
-                        EEPROM.get(config_addr,configuration);
-                        Serial.println(configuration.version);
+                        Serial.print(F("Version : "));
+                        Serial.println(EEPROM.read(config_addr+4));
                     }else{
-                        Serial.println("Error : Command not found. Please try another one.");
+                        Serial.println(F("Error : Command not found. Please try another one."));
                     }
                 }else{
                     Update(command.substring(0,index),command.substring(index+1));
@@ -60,7 +57,7 @@ void Configuration(){
     ChangeLEDStatus();
 }
 
-void Update(String command, String value){
+void Update(const String &command, const String &value){
     if(command.equalsIgnoreCase("LOG_INTERVAL")){
         EEPROM.update(config_addr,value.toInt());
     }else if(command.equalsIgnoreCase("FILE_MAX_SIZE")){
@@ -101,7 +98,7 @@ void Update(String command, String value){
         uint8_t minutes = value.substring(value.indexOf(":")+1,value.lastIndexOf(":")).toInt();
         uint8_t seconds = value.substring(value.lastIndexOf(":")+1).toInt();
         if(hour < 0 || hour > 24 || minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59){
-            Serial.println("Error : Please enter a valid clock time");
+            Serial.println(F("Error : Please enter a valid clock time"));
             return;
         }else{clock.adjust(DateTime(clock.now().year(),clock.now().month(),clock.now().day(),hour,minutes,seconds));}
     }else if(command.equalsIgnoreCase("DATE") && CountChar(value,':') == 2){
@@ -109,17 +106,17 @@ void Update(String command, String value){
         uint8_t day = value.substring(value.indexOf(":")+1,value.lastIndexOf(":")).toInt();
         uint16_t year = value.substring(value.lastIndexOf(":")+1).toInt();
         if(month < 1 || month > 12 || day < 1 || day > 31 || year < 2000 || year > 2099){
-            Serial.println("Error : Please enter a valid date");
+            Serial.println(F("Error : Please enter a valid date"));
             return;
         }else{clock.adjust(DateTime(year,month,day,clock.now().hour(),clock.now().minute(),clock.now().second()));}
     }else{
-        Serial.println("Error : Please enter a valid value");
+        Serial.println(F("Error : Please enter a valid value"));
         return;
     }
-    Serial.println("Success : Configuration successfully updated");
+    Serial.println(F("Success : Configuration successfully updated"));
 }
 
-int CountChar(String string, char ch){
+int CountChar(const String &string, char ch){
     uint8_t count = 0;
     for(uint8_t i = 0; i<string.length();i++){
         if(string[i] == ch) count++;

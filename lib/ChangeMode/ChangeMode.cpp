@@ -4,21 +4,16 @@
 int state = standard;
 stateList etats;
 
-// Permet de savoir dans quel mode retourner (standard/eco) ...
-// quand on sort du mode maintenance
-
 void Interruption_boutonV()
 {
   static unsigned long time;
   static bool pressed = false;
-  if (!digitalRead(greenInterruptBtn) && !pressed)
+  bool isPressed = digitalRead(greenInterruptBtn);
+  if (!isPressed && !pressed)
   {
-    // change l'etat à l'aide d'un pointeur
-    //(car on ne peut modifier une var globale dans un fct)
-    Serial.println("Interrupt_V");
     time = millis();
     pressed = !pressed;
-  }else if(digitalRead(greenInterruptBtn) && pressed){
+  }else if(isPressed && pressed){
     pressed = !pressed;
     if(millis() - time >= 5000){
     switch (state)
@@ -40,12 +35,12 @@ void Interruption_boutonR()
   static unsigned long time;
   static bool pressed = false;
   static int StandardLastMode;
-  if (!digitalRead(redInterruptBtn) && !pressed)
+  bool isPressed = digitalRead(redInterruptBtn);
+  if (!isPressed && !pressed)
   {
-    Serial.println("Interrupt R");
     time = millis();
     pressed = !pressed;
-  }else if(digitalRead(redInterruptBtn) && pressed){
+  }else if(isPressed && pressed){
     pressed = !pressed;
     if (millis() - time >= 5000)
     {

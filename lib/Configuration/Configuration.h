@@ -8,8 +8,6 @@
 #define pression_addr hygro_addr+sizeof(hygro)
 #define config_addr pression_addr+sizeof(pression)
 
-#include <EEPROM.h>
-#include "Configuration.h"
 #include "Sensors.h"
 
 typedef struct{
@@ -58,7 +56,7 @@ typedef struct
 
 void ResetDefault();
 void Configuration();
-void Update(String command, String value);
-int CountChar(String string, char ch);
+void Update(const String &command, const String &value);
+int CountChar(const String &string, char ch);
 
 #endif

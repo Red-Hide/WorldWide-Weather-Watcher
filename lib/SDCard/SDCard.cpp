@@ -1,58 +1,36 @@
 #include "SDCard.h"
 #include <Sensors.h>
-#include <Arduino.h>
-#include <SdFat.h>
 
 SdFat32 card;
-FatFile file;
-SdFat SD;
-void SDCardWrite(String x)
+
+void SDCardWrite(const String& x)
 {
-  String date = String(clock.now().year()) + String(clock.now().month()) + String(clock.now().day());
-  File Donnees;
+  String date("");
+  date += String(clock.now().year());
+  date += String(clock.now().month());
+  date += String(clock.now().day());
+  File32 Donnees;
   int revisionNumber = 0;
 
-  String fileName = date + "_0";
-  Donnees = SD.open(fileName, FILE_WRITE);
+  String fileName(date);
+  fileName += "_0";
+  Donnees = card.open(fileName, FILE_WRITE);
 
   if (Donnees)
   {
-    Serial.print("Writing Data");
     Donnees.println(x);
     if (Donnees.size() >= 2048)
     {
 
       Donnees.close();
-      String newFileName = date + "_" + String(revisionNumber + 1);
-      SD.rename(fileName, newFileName);
+      String newFileName(date);
+      newFileName += "_";
+      newFileName +=  String(revisionNumber + 1);
+      card.rename(fileName, newFileName);
     }
   }
   else
   {
-    Serial.println("Error opening data file");
-  }
-}
-
-void SDCardRead(String y)
-{
-  File Donnees;
-  // re-open the file for reading:
-  Donnees = SD.open("test.txt");
-  if (Donnees)
-  {
-    Serial.println("test.txt:");
-
-    // read from the file until there's nothing else in it:
-    while (Donnees.available())
-    {
-      Serial.write(Donnees.read());
-    }
-    // close the file:
-    Donnees.close();
-  }
-  else
-  {
-    // if the file didn't open, print an error:
-    Serial.println("error opening test.txt");
+    Serial.println(F("Error opening data file"));
   }
 }

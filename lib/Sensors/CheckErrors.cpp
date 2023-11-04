@@ -1,9 +1,10 @@
 #include "Sensors.h"
+#include <EEPROM.h>
 
 bool SDCard_Errors() {
     if (!card.begin()) {
         return true;
-    }
+    }   
     return false;
 }
 

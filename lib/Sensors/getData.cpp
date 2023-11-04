@@ -1,36 +1,54 @@
 #include "Sensors.h"
+#include <EEPROM.h>
+
 
 String getDate(){
   static bool timeout = false;
-  if (!RTC_error())
+  char *date = "T : ";
+  char buffer [10];
+  bool error_rtc = RTC_error();
+  if (!error_rtc)
   {
-    return "T : " + String(clock.now().year()) + "/" + String(clock.now().month()) + "/" + String(clock.now().day()) + " " + String(clock.now().hour()) + ":" + String(clock.now().minute()) + ":" + String(clock.now().second()) + " | ";
-  }else if (RTC_error() && timeout){
+    strcat(date,itoa(clock.now().year(),buffer,10));
+    strcat(date,"/");
+    strcat(date,itoa(clock.now().month(),buffer,10));
+    strcat(date,"/");
+    strcat(date,itoa(clock.now().day(),buffer,10));
+    strcat(date," ");
+    strcat(date,itoa(clock.now().hour(),buffer,10));
+    strcat(date,":");
+    strcat(date,itoa(clock.now().minute(),buffer,10));
+    strcat(date,":");
+    strcat(date,itoa(clock.now().second(),buffer,10));
+    strcat(date," | ");
+    return String(date);
+  }else if (error_rtc && timeout){
     int lastState = state;
     state = erreur_RTC;
     ChangeLEDStatus();
     timeout = false;
     state = lastState;
   }else{
-    return "T : NA | ";
+    strcat(date, "NA | ");
+    return String(date);
   }
-  
 }
 
 String getGPS()
 {
-  String gps = "G : ";
+  String gps("G : ");
   static bool timeout = false;
-  if (!GPS_error())
+  bool error_GPS = GPS_error();
+  if (!error_GPS)
   {
     if (SoftSerial.available()) // Si il y a des valeurs a lire
     {
       int cond = 2;
-      String tmp;      // caractère temporaire     String gps = "G";(à ajouter au string ou facilite la lecture)
+      char tmp;      // caractère temporaire     String gps = "G";(à ajouter au string ou facilite la lecture)
       while (cond > 0) // Premiere boucle, on attend d'obtenir les coordonnées (après 2 virgules)
       {
         tmp = char(SoftSerial.read()); // Lit un caractère ASCII de SoftSerial et le convertit
-        if (tmp == ",")                // Quand on voit une virgule
+        if (tmp == ',')                // Quand on voit une virgule
         {
           cond -= 1;
         }
@@ -41,7 +59,7 @@ String getGPS()
       {
         tmp = char(SoftSerial.read()); // Lit un caractère ASCII de SoftSerial et le convertit
         gps += tmp;                    // Ajout du caractère aux coordonnées
-        if (tmp == "E" or tmp == "W")  // Quand on voit un E ou un W
+        if (tmp == 'E' or tmp == 'W')  // Quand on voit un E ou un W
         {
           cond = 0;                      // Fin de la boucle
           while (SoftSerial.available()) // Lit toutes les valeurs restantes
@@ -52,7 +70,7 @@ String getGPS()
       }
     }
   }
-  else if (GPS_error() && timeout)
+  else if (error_GPS && timeout)
   {
     int lastState = state;
     state = erreur_GPS;
@@ -62,47 +80,52 @@ String getGPS()
   }
   else
   {
-    return "G : NA";
+    gps += "NA";
+    return gps;
   }
   return gps;
 }
 
 String getLight()
 {
-  String clight;
+  String clight("L : ");
   if (EEPROM.read(lum_addr)) // Si capteur de luminosité activé
   {
-    int luminosite = analogRead(LightSensor_Pin);
+    uint16_t luminosite = analogRead(LightSensor_Pin);
     uint16_t lumin_low;
     uint16_t lumin_high;
     EEPROM.get(lum_addr + 1, lumin_low);
     EEPROM.get(lum_addr + 3, lumin_high);
     if (lumin_low > luminosite)
     {
-      clight = "faible";
+      clight += "faible";
     }
     else if (lumin_high < luminosite)
     {
-      clight = "forte";
+      clight += "forte";
     }
     else
     {
-      clight = "moyenne";
+      clight += "moyenne";
     }
-    return "L : " + clight + " | ";
+    clight += " | ";
+    return clight;
   }
-  return "L : Désactivé | ";
+  clight += "Désactivé | ";
+  return clight;
 }
 
 String getBME()
 {
   float pression, temperature, hygrometrie;
-  String cpres = "NA";
-  String ctemp = "NA";
-  String chygr = "NA";
+  String cpres("P : ");
+  String ctemp("T : ");
+  String chygr("H : ");
+  String data("");
+  bool erreur = BME_error();
   static bool timeout = false;
 
-  if (!BME_error())
+  if (!erreur)
   {
     if (EEPROM.read(pression_addr)) // Si capteur de pression activé
     {
@@ -113,13 +136,10 @@ String getBME()
       EEPROM.get(pression_addr + 3, pressure_max);
       if (pressure_min > pression || pression > pressure_max)
       {
-        int lastState = state;
         state = erreur_DATA;
         ChangeLEDStatus();
-        state = lastState;
-        return "P : " + cpres + " | T : " + ctemp + " | H : " + chygr + " | ";
       }
-      cpres = String(pression);
+      cpres += String(pression);
     }
     if (EEPROM.read(temp_addr)) // Si capteur de temperature activé
     {
@@ -130,13 +150,10 @@ String getBME()
       EEPROM.get(temp_addr + 3, temp_max);
       if (temp_min > temperature || temperature > temp_max)
       {
-        int lastState = state;
         state = erreur_DATA;
         ChangeLEDStatus();
-        state = lastState;
-        return "P : " + cpres + " | T : " + ctemp + " | H : " + chygr + " | ";
       }
-      ctemp = String(temperature);
+      ctemp += String(temperature);
     }
     if (EEPROM.read(hygro_addr)) // Si capteur d'hygrométrie activé
     {
@@ -147,18 +164,39 @@ String getBME()
       EEPROM.get(hygro_addr + 3, hygr_max);
       if (hygr_min > hygrometrie || hygrometrie > hygr_max)
       {
-        return "P : " + cpres + " | T : " + ctemp + " | H : " + chygr + " | ";
+        chygr += "NA";
+        data += cpres;
+        data += " | ";
+        data += ctemp;
+        data += " | ";
+        data += chygr;
+        data += " | ";
+        return data;
       }
-      chygr = String(hygrometrie);
+      chygr += String(hygrometrie);
     }
   }
-  else if (BME_error() && timeout)
+  else if (erreur && timeout)
   {
     int lastState = state;
     state = erreur_BME;
     ChangeLEDStatus();
     timeout = false;
     state = lastState;
+  }else{
+    data += cpres;
+    data += "NA | ";
+    data += ctemp;
+    data += "NA | ";
+    data += chygr;
+    data += "NA |";
+    return data;
   }
-  return "P : " + cpres + " | T : " + ctemp + " | H : " + chygr + " | ";
+  data += cpres;
+  data += " | ";
+  data += ctemp;
+  data += " | ";
+  data += chygr;
+  data += " | ";
+  return data;
 }
