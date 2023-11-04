@@ -50,59 +50,84 @@ void Configuration(){
     ChangeLEDStatus(standard);
 }
 
-void Update(const String &command, const String &value){
-    if(command.equalsIgnoreCase("LOG_INTERVAL")){
-        EEPROM.update(config_addr,value.toInt());
-    }else if(command.equalsIgnoreCase("FILE_MAX_SIZE")){
-        EEPROM.update(config_addr+1,highByte(value.toInt()));
-        EEPROM.update(config_addr+2,lowByte(value.toInt()));
-    }else if(command.equalsIgnoreCase("TIMEOUT")){
-        EEPROM.update(config_addr+3,value.toInt());
-    }else if(command.equalsIgnoreCase("LUMIN") && value.toInt() <= 1 && value.toInt() >= 0){
-        EEPROM.update(lum_addr,value.toInt());
-    }else if(command.equalsIgnoreCase("LUMIN_LOW") && value.toInt() >= 0 && value.toInt() <= 1023){
-        EEPROM.update(lum_addr+1,highByte(value.toInt()));
-        EEPROM.update(lum_addr+2,lowByte(value.toInt()));
-    }else if(command.equalsIgnoreCase("LUMIN_HIGH") && value.toInt() >= 0 && value.toInt() <= 1023){
-        EEPROM.update(lum_addr+3,highByte(value.toInt()));
-        EEPROM.update(lum_addr+4,lowByte(value.toInt()));
-    }else if(command.equalsIgnoreCase("TEMP_AIR") && value.toInt() <= 1 && value.toInt() >= 0){
-        EEPROM.update(temp_addr,value.toInt());
-    }else if(command.equalsIgnoreCase("MIN_TEMP_AIR") && value.toInt() >= -40 && value.toInt() <= 85){
-        EEPROM.update(temp_addr+1,value.toInt());
-    }else if(command.equalsIgnoreCase("MAX_TEMP_AIR") && value.toInt() >= -40 && value.toInt() <= 85){
-        EEPROM.update(temp_addr+2,value.toInt());
-    }else if(command.equalsIgnoreCase("HYGR") && value.toInt() <= 1 && value.toInt() >= 0){
-        EEPROM.update(hygro_addr,value.toInt());
-    }else if(command.equalsIgnoreCase("HYGR_MINT") && value.toInt() >= -40 && value.toInt() <= 85){
-        EEPROM.update(hygro_addr+1,value.toInt());
-    }else if(command.equalsIgnoreCase("HYGR_MAXT") && value.toInt() >= -40 && value.toInt() <= 85){
-        EEPROM.update(hygro_addr+1,value.toInt());
-    }else if(command.equalsIgnoreCase("PRESSURE") && value.toInt() <= 1 && value.toInt() >= 0){
-        EEPROM.update(pression_addr,value.toInt());
-    }else if(command.equalsIgnoreCase("PRESSURE_MIN") && value.toInt() >= 300 && value.toInt() <= 1100){
-        EEPROM.update(pression_addr+1,highByte(value.toInt()));
-        EEPROM.update(pression_addr+2,lowByte(value.toInt()));
-    }else if(command.equalsIgnoreCase("PRESSURE_MAX") && value.toInt() >= 300 && value.toInt() <= 1100){
-        EEPROM.update(pression_addr+3,highByte(value.toInt()));
-        EEPROM.update(pression_addr+4,lowByte(value.toInt()));
-    }else if(command.equalsIgnoreCase("CLOCK") && CountChar(value,':') == 2){
+bool checkValue(int val, char type)
+{
+    switch (type)
+    {
+        case 'c': //condition
+            return val == 1;
+        case 'l': //lumière
+            return (val >= 0 && val <= 1023);
+        case 't': //temperature OU hygrométrie
+            return (val >= -40 && val <= 85);
+        case 'p': //pression
+            return (val >= 300 && val <= 1100);
+    }
+}
+
+void Update(const String &command, const String &value)
+{
+
+    if(command.equalsIgnoreCase("CLOCK") && CountChar(value,':') == 2)
+    {
         uint8_t hour = value.substring(0,value.indexOf(":")).toInt();
         uint8_t minutes = value.substring(value.indexOf(":")+1,value.lastIndexOf(":")).toInt();
         uint8_t seconds = value.substring(value.lastIndexOf(":")+1).toInt();
         if(hour < 0 || hour > 24 || minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59){
             return;
         }else{clock.adjust(DateTime(clock.now().year(),clock.now().month(),clock.now().day(),hour,minutes,seconds));}
-    }else if(command.equalsIgnoreCase("DATE") && CountChar(value,':') == 2){
+    }
+    else if(command.equalsIgnoreCase("DATE") && CountChar(value,':') == 2)
+    {
         uint8_t month = value.substring(0,value.indexOf(":")).toInt();
         uint8_t day = value.substring(value.indexOf(":")+1,value.lastIndexOf(":")).toInt();
         uint16_t year = value.substring(value.lastIndexOf(":")+1).toInt();
         if(month < 1 || month > 12 || day < 1 || day > 31 || year < 2000 || year > 2099){
-            return;
-        }else{clock.adjust(DateTime(year,month,day,clock.now().hour(),clock.now().minute(),clock.now().second()));}
-    }else{
+            return;}
+        else
+        {clock.adjust(DateTime(year,month,day,clock.now().hour(),clock.now().minute(),clock.now().second()));}}
+    else
+    {
+        int val = value.toInt();
+        if(command.equalsIgnoreCase("LOG_INTERVAL")){
+        EEPROM.update(config_addr,val);
+        }else if(command.equalsIgnoreCase("FILE_MAX_SIZE")){
+        EEPROM.update(config_addr+1,highByte(val));
+        EEPROM.update(config_addr+2,lowByte(val));
+        }else if(command.equalsIgnoreCase("TIMEOUT")){
+        EEPROM.update(config_addr+3,val);
+        }else if(command.equalsIgnoreCase("LUMIN") && checkValue(val,'c') ){
+        EEPROM.update(lum_addr,val);
+        }else if(command.equalsIgnoreCase("LUMIN_LOW") && checkValue(val,'l')){
+        EEPROM.update(lum_addr+1,highByte(val));
+        EEPROM.update(lum_addr+2,lowByte(val));
+        }else if(command.equalsIgnoreCase("LUMIN_HIGH") && checkValue(val,'l')){
+        EEPROM.update(lum_addr+3,highByte(val));
+        EEPROM.update(lum_addr+4,lowByte(val));
+        }else if(command.equalsIgnoreCase("TEMP_AIR") && checkValue(val,'c')){
+        EEPROM.update(temp_addr,val);
+        }else if(command.equalsIgnoreCase("MIN_TEMP_AIR") && checkValue(val,'t')){
+        EEPROM.update(temp_addr+1,val);
+        }else if(command.equalsIgnoreCase("MAX_TEMP_AIR") && checkValue(val,'t')){
+        EEPROM.update(temp_addr+2,val);
+        }else if(command.equalsIgnoreCase("HYGR") && checkValue(val,'c')){
+        EEPROM.update(hygro_addr,val);
+        }else if(command.equalsIgnoreCase("HYGR_MINT") && checkValue(val,'t')){
+        EEPROM.update(hygro_addr+1,val);
+        }else if(command.equalsIgnoreCase("HYGR_MAXT") && checkValue(val,'t')){
+        EEPROM.update(hygro_addr+1,val);
+        }else if(command.equalsIgnoreCase("PRESSURE") && checkValue(val,'c')){
+        EEPROM.update(pression_addr,val);
+        }else if(command.equalsIgnoreCase("PRESSURE_MIN") && checkValue(val,'p')){
+        EEPROM.update(pression_addr+1,highByte(val));
+        EEPROM.update(pression_addr+2,lowByte(val));
+        }else if(command.equalsIgnoreCase("PRESSURE_MAX") && checkValue(val,'p')){
+        EEPROM.update(pression_addr+3,highByte(val));
+        EEPROM.update(pression_addr+4,lowByte(val));
+    }else
         return;
     }
+    
 }
 
 int CountChar(const String &string, char ch){
@@ -112,3 +137,4 @@ int CountChar(const String &string, char ch){
     }
     return count;
 }
+
