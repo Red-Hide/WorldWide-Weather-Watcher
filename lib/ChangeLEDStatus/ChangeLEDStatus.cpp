@@ -2,6 +2,28 @@
 
 ChainableLED leds(7, 8, 1);
 
+void blink(char color,int duree)
+{
+  leds.setColorRGB(7, 255, 0, 0); //rouge
+  delay(1000);
+  switch (color)
+  {
+    case 'w':
+      leds.setColorRGB(7, 255, 255, 255); //blanc 
+      break;
+    case 'b':
+      leds.setColorRGB(7, 0, 0, 255); //bleu
+      break;
+    case 'g':
+      leds.setColorRGB(7, 0, 255, 0); //vert
+      break;
+    case 'y':
+      leds.setColorRGB(7, 255, 255, 0); //jaune
+      break;
+  }
+  delay(duree);
+}
+
 void ChangeLEDStatus(int status)
 {
   state = status;
@@ -21,50 +43,34 @@ void ChangeLEDStatus(int status)
     break;
   case erreur_RTC:
     while(RTC_error()){
-      leds.setColorRGB(7, 255, 0, 0); //rouge
-      delay(1000);
-      leds.setColorRGB(7, 0, 0, 255); //bleu
-      delay(1000);
+      blink('b',1000);
     }
   case erreur_GPS:
     while (GPS_error())
     {
-      leds.setColorRGB(7, 255, 0, 0); //rouge
-      delay(1000);
-      leds.setColorRGB(7, 255, 255, 0); //jaune
-      delay(1000);
+      blink('y',1000);
     }
   case erreur_BME:
     while (BME_error())
     {
-      leds.setColorRGB(7, 255, 0, 0); //rouge
-      delay(1000);
-      leds.setColorRGB(7, 0, 255, 0); //vert
-      delay(1000);
+      blink('g',1000); 
     }
   case erreur_DATA:
     while (true)
     {
-      leds.setColorRGB(7, 255, 0, 0); //rouge
-      delay(1000);
-      leds.setColorRGB(7, 0, 255, 0); //vert
-      delay(1000);
+      blink('b',2000);
     }
   case SD_FULL:
     while (SDCard_Space())
     {
-      leds.setColorRGB(7, 255, 0, 0); //rouge
-      delay(1000);
-      leds.setColorRGB(7, 255, 255, 255); //blanc
-      delay(1000);
+      blink('w',1000);
     }
   case erreur_SD:
     while (SDCard_Errors())
     {
-      leds.setColorRGB(7, 255, 0, 0); //rouge
-      delay(1000);
-      leds.setColorRGB(7, 255, 255, 255); //blanc
-      delay(2000);
+      blink('w',2000);
     }
   }
 }
+
+
