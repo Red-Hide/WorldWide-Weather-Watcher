@@ -14,7 +14,6 @@
 extern ChainableLED leds; // pin 7 et 8 sur une LED
 extern ForcedClimate bme;
 extern RTC_DS1307 clock;
-extern SoftwareSerial SoftSerial;
 
 String getDate();
 String getGPS();

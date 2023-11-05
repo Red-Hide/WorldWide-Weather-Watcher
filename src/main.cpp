@@ -3,8 +3,8 @@
 
 void setup()
 {
-  initSensors();
   ResetDefault();
+  initSensors();
   Configuration();
 }
 
@@ -21,13 +21,12 @@ void loop()
     interval = EEPROM.read(config_addr);
   }
 
-  while (millis() - TimeStart < interval * 60UL * 1000UL)
+  while ((millis() - TimeStart) < 1000)
   {
   }
 
-  String mesures;
+  String mesures("");
   mesures += acquisition();
-
   if (state == maintenance)
   {
     Serial.println(mesures);

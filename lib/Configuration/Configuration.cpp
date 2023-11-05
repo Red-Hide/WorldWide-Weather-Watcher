@@ -3,15 +3,13 @@
 
 void ResetDefault(){
     uint8_t addr = 0;
-    switch (EEPROM.read(addr))
-    {
-    case 255:
-        const lum lum_config;
-        const temp temp_config;
-        const hygro hygro_config;
-        const pression pression_config;
-        const time time_config;
-        const config config_values;
+    if (EEPROM.read(addr) == 255){
+        lum lum_config;
+        temp temp_config;
+        hygro hygro_config;
+        pression pression_config;
+        time time_config;
+        config config_values;
         EEPROM.update(addr,1);
         addr += 1;
         EEPROM.put(addr,lum_config);
@@ -24,7 +22,6 @@ void ResetDefault(){
         addr += sizeof(pression_config);
         EEPROM.put(addr,config_values);
         clock.adjust(DateTime(time_config.year,time_config.month,time_config.day,time_config.hours,time_config.minutes,time_config.seconds));
-        break;
     }
 }
 
@@ -35,14 +32,16 @@ void Configuration(){
         while ((millis() - timeStart) < config_timeout * 60UL * 1000UL)
         {
             if (Serial.available()){
-                const String command = Serial.readString();
+                String command = Serial.readString();
+                command.trim();
                 const int index = command.indexOf("=");
                 if(index == -1){
                     if(command.equalsIgnoreCase("RESET")){
                         EEPROM.update(0,255);
                         ResetDefault();
                     }else if(command.equalsIgnoreCase("VERSION")){
-                        Serial.write(EEPROM.read(config_addr+4));
+                        Serial.print("Version : ");
+                        Serial.println(EEPROM.read(config_addr+4));
                     }
                 }else{
                     Update(command.substring(0,index),command.substring(index+1));

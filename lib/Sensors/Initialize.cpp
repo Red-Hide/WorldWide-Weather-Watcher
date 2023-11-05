@@ -1,7 +1,6 @@
 #include "Sensors.h"
 
 RTC_DS1307 clock;
-SoftwareSerial SoftSerial(4,5);
 ForcedClimate bme = ForcedClimate();
 
 void initInterrupt()
@@ -11,19 +10,13 @@ void initInterrupt()
 }
 
 void initSensors(){
-  leds.init();
+  pinMode(greenInterruptBtn,INPUT_PULLUP);
+  pinMode(redInterruptBtn,INPUT_PULLUP);
   initInterrupt();
-  DDRD = DDRD | B11110000;
+  bme.begin();
   initRTC();
-  initSD();
+  leds.init();
   Serial.begin(9600);
-  SoftSerial.begin(9600);
-}
-
-void initSD(){
-  if (!card.begin(4)) {
-    ChangeLEDStatus(erreur_SD);
-  }
 }
 
 void initRTC(){

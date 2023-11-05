@@ -4,21 +4,21 @@ ChainableLED leds(7, 8, 1);
 
 void blink(char color,int duree)
 {
-  leds.setColorRGB(7, 255, 0, 0); //rouge
+  leds.setColorRGB(0, 255, 0, 0); //rouge
   _delay_ms(1000);
   switch (color)
   {
     case 'w':
-      leds.setColorRGB(7, 255, 255, 255); //blanc 
+      leds.setColorRGB(0, 20, 20, 20); //blanc 
       break;
     case 'b':
-      leds.setColorRGB(7, 0, 0, 255); //bleu
+      leds.setColorRGB(0, 0, 0, 20); //bleu
       break;
     case 'g':
-      leds.setColorRGB(7, 0, 255, 0); //vert
+      leds.setColorRGB(0, 0, 20, 0); //vert
       break;
     case 'y':
-      leds.setColorRGB(7, 255, 255, 0); //jaune
+      leds.setColorRGB(0, 20, 20, 0); //jaune
       break;
   }
   delay(duree);
@@ -51,7 +51,7 @@ void ChangeLEDStatus(int status)
       blink('y',1000);
     }
   case erreur_DATA:
-    for (;;)
+    while (true)
     {
       blink('g',2000);
     }
