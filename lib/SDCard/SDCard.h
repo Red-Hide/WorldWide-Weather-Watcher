@@ -3,6 +3,6 @@
 #include <SdFat.h>
 
 
-void SDCardWrite(const String& x);
+void SDCardWrite(String x);
 
 #endif

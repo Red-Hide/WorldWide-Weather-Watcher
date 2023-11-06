@@ -1,30 +1,41 @@
 #include "SDCard.h"
 #include <Sensors.h>
 
-void SDCardWrite(const String &x)
+void SDCardWrite(String x)
 {
-  SdFat32 card;
-  card.begin(4);
-  String date("");
+  SdFat card;
+  if (!card.begin(4))
+  {
+
+  }
+
+  String date = "";
   date += String(clock.now().year());
   date += String(clock.now().month());
   date += String(clock.now().day());
   File32 Donnees;
   static int revisionNumber = 0;
 
-  String fileName(date);
-  fileName += "_0";
-  Donnees.open(fileName.c_str());
+  String fileName = date;
+  fileName += "_0.LOG";
+  String newFileName = fileName;
 
-  Donnees.println(x);
-  if (Donnees.size() >= 2048)
+  Donnees = card.open(fileName.c_str(), FILE_WRITE);
+
+  if (Donnees)
   {
-
-    String newFileName(date);
-    newFileName += "_";
-    revisionNumber++;
-    newFileName += String(revisionNumber);
-    card.rename(fileName, newFileName);
+    Donnees.println(x);
+    if (Donnees.size() >= 2048)
+    {
+      while (card.exists(newFileName))
+      {
+        revisionNumber++;
+        newFileName = date + "_" + String(revisionNumber) + ".LOG";
+      }
+      card.rename(fileName, newFileName);
+    }
+  }else{
+    Serial.println("ErrF");
   }
   Donnees.close();
   card.end();

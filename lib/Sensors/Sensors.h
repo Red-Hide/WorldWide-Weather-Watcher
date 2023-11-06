@@ -23,7 +23,6 @@ String getBME();
 void initInterrupt();
 void initSensors();
 void initRTC();
-void initSD();
 
 bool SDCard_Errors();
 bool SDCard_Space();

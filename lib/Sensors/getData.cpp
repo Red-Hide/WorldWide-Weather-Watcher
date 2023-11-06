@@ -4,7 +4,7 @@
 String getDate()
 {
   static bool timeout = false;
-  String date("D : ");
+  String date("D:");
   bool error_rtc = RTC_error();
   if (!error_rtc)
   {
@@ -19,8 +19,6 @@ String getDate()
     date += String(clock.now().minute());
     date += ":";
     date += String(clock.now().second());
-    date += " | ";
-    return String(date);
   }
   else if (error_rtc && timeout)
   {
@@ -31,7 +29,7 @@ String getDate()
   }
   else
   {
-    date += "NA | ";
+    date += "NA";
     return String(date);
   }
   return String(date);
@@ -39,18 +37,18 @@ String getDate()
 
 String getGPS()
 {
-  SoftwareSerial SoftSerial(5,6);
+  SoftwareSerial SoftSerial(6,7);
   SoftSerial.begin(9600);
-  String gps("G : ");
+  String gps("G:");
   static bool timeout = false;
   bool error_GPS = GPS_error();
   if (!error_GPS)
   {
-    if (SoftSerial.available()) // Si il y a des valeurs a lire
+    if (SoftSerial.available()) 
     {
       int cond = 2;
-      char tmp;        // caractère temporaire     String gps = "G";(à ajouter au string ou facilite la lecture)
-      while (cond > 0) // Premiere boucle, on attend d'obtenir les coordonnées (après 2 virgules)
+      char tmp;        
+      while (cond > 0) 
       {
         tmp = char(SoftSerial.read()); // Lit un caractère ASCII de SoftSerial et le convertit
         if (tmp == ',')                // Quand on voit une virgule
@@ -85,8 +83,6 @@ String getGPS()
   else
   {
     gps += "NA";
-    SoftSerial.end();
-    return gps;
   }
   SoftSerial.end();
   return gps;
@@ -94,7 +90,7 @@ String getGPS()
 
 String getLight()
 {
-  String clight("L : ");
+  String clight("L:");
   if (EEPROM.read(lum_addr)) // Si capteur de luminosité activé
   {
     uint16_t luminosite = analogRead(LightSensor_Pin);
@@ -114,19 +110,18 @@ String getLight()
     {
       clight += "moyenne";
     }
-    clight += " | ";
-    return clight;
+  }else{
+    clight += "Désactivé|";
   }
-  clight += "Désactivé | ";
   return clight;
 }
 
 String getBME()
 {
   float pression, temperature, hygrometrie;
-  String cpres("P : ");
-  String ctemp("T : ");
-  String chygr("H : ");
+  String cpres("P:");
+  String ctemp("T:");
+  String chygr("H:");
   String data("");
   bme.takeForcedMeasurement();
   if (EEPROM.read(pression_addr)) // Si capteur de pression activé
@@ -145,10 +140,8 @@ String getBME()
   if (EEPROM.read(temp_addr)) // Si capteur de temperature activé
   {
     temperature = bme.getTemperatureCelcius(); // °C
-    int8_t temp_min;
-    int8_t temp_max;
-    EEPROM.get(temp_addr + 1, temp_min);
-    EEPROM.get(temp_addr + 2, temp_max);
+    int8_t temp_min = EEPROM.read(temp_addr + 1);
+    int8_t temp_max = EEPROM.read(temp_addr + 2);
     if (temp_min > temperature || temperature > temp_max)
     {
       ChangeLEDStatus(erreur_DATA);
@@ -158,28 +151,17 @@ String getBME()
   if (EEPROM.read(hygro_addr)) // Si capteur d'hygrométrie activé
   {
     hygrometrie = bme.getRelativeHumidity(); // %
-    int8_t hygr_min;
-    int8_t hygr_max;
-    EEPROM.get(hygro_addr + 1, hygr_min);
-    EEPROM.get(hygro_addr + 2, hygr_max);
+    int8_t hygr_min = EEPROM.read(hygro_addr + 1);
+    int8_t hygr_max = EEPROM.read(hygro_addr + 2);
     if (hygr_min > hygrometrie || hygrometrie > hygr_max)
     {
       chygr += "NA";
-      data += cpres;
-      data += " | ";
-      data += ctemp;
-      data += " | ";
-      data += chygr;
-      data += " | ";
-      return data;
+    }else{
+      chygr += String(hygrometrie);
     }
-    chygr += String(hygrometrie);
   }
   data += cpres;
-  data += " | ";
   data += ctemp;
-  data += " | ";
   data += chygr;
-  data += " | ";
   return data;
 }

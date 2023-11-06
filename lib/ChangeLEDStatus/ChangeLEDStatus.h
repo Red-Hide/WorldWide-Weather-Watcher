@@ -3,6 +3,6 @@
 #include "Sensors.h"
 
 void ChangeLEDStatus(int status);
-void blink(char color,int duree);
+void blink(char color,uint16_t duree);
 
 #endif

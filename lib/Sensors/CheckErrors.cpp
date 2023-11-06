@@ -26,7 +26,7 @@ bool SDCard_Space(){ // use card.card() to return pointer
 }
 
 bool GPS_error(){
-    SoftwareSerial SoftSerial(5,6);
+    SoftwareSerial SoftSerial(6,7);
     SoftSerial.begin(9600);
     unsigned long TimeStart = millis();
     while (millis() - TimeStart < EEPROM.read(config_addr+3)*1000)

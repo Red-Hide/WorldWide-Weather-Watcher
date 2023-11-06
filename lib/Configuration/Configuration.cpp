@@ -1,7 +1,7 @@
 #include "Configuration.h"
 #include <EEPROM.h>
 
-void ResetDefault(){
+/*void ResetDefault(){
     uint8_t addr = 0;
     if (EEPROM.read(addr) == 255){
         lum lum_config;
@@ -23,7 +23,7 @@ void ResetDefault(){
         EEPROM.put(addr,config_values);
         clock.adjust(DateTime(time_config.year,time_config.month,time_config.day,time_config.hours,time_config.minutes,time_config.seconds));
     }
-}
+}*/
 
 void Configuration(){
     if(!digitalRead(redInterruptBtn)){
@@ -38,9 +38,8 @@ void Configuration(){
                 if(index == -1){
                     if(command.equalsIgnoreCase("RESET")){
                         EEPROM.update(0,255);
-                        ResetDefault();
+                        //ResetDefault();
                     }else if(command.equalsIgnoreCase("VERSION")){
-                        Serial.print("Version : ");
                         Serial.println(EEPROM.read(config_addr+4));
                     }
                 }else{
@@ -69,7 +68,6 @@ bool checkValue(const int &val, char type)
 
 void Update(const String &command, const String &value)
 {
-
     if(command.equalsIgnoreCase("CLOCK") && CountChar(value,':') == 2)
     {
         uint8_t hour = value.substring(0,value.indexOf(":")).toInt();
@@ -128,7 +126,6 @@ void Update(const String &command, const String &value)
         EEPROM.update(pression_addr+4,lowByte(val));
     }
     }
-    
 }
 
 int CountChar(const String &string, char ch){

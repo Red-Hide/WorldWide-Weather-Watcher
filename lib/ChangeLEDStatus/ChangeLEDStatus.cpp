@@ -1,10 +1,10 @@
 #include "ChangeLEDStatus.h"
 
-ChainableLED leds(7, 8, 1);
+ChainableLED leds(8, 9, 1);
 
-void blink(char color,int duree)
+void blink(char color,uint16_t duree)
 {
-  leds.setColorRGB(0, 255, 0, 0); //rouge
+  leds.setColorRGB(0, 20, 0, 0); //rouge
   _delay_ms(1000);
   switch (color)
   {

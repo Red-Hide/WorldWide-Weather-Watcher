@@ -55,7 +55,7 @@ typedef struct
     uint8_t version = 1;
 }config;
 
-void ResetDefault();
+//void ResetDefault();
 void Configuration();
 void Update(const String &command, const String &value);
 bool checkValue(int &val, char type);

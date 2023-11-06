@@ -3,8 +3,8 @@
 
 void setup()
 {
-  ResetDefault();
   initSensors();
+  //ResetDefault();
   Configuration();
 }
 
